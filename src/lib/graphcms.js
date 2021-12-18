@@ -81,30 +81,19 @@ export async function getAllCities() {
   return data.cities;
 }
 
-export async function getAllCityPreviews(preview) {
+export async function getAllCityPreviews() {
   const data = await fetchAPI(
     `
       {
-        posts(orderBy: date_DESC, first: 20) {
-          title
-          slug
-          excerpt
-          date
-          coverImage {
-            url(transformation: {
-              image: {
-                resize: {
-                  fit:crop,
-                  width:2000,
-                  height:1000
-                }
-              }
-            })
+        cities(orderBy: cityRelevance_DESC) {
+          cityName,
+          cityMap {
+            id,
+            url
           }
         }
       }
-    `,
-    { preview }
+    `
   );
-  return data.posts;
+  return data.cities;
 }

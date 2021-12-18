@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const CountryItem = ({ name, isSelected }) => {
+const CityItem = ({ name, mapUrl, isSelected }) => {
   return (
     <div
       className={`group hover:bg-gray-100/10 ${
@@ -10,7 +10,7 @@ const CountryItem = ({ name, isSelected }) => {
       <div className="pb-4 px-8 border-b">
         <div className="group-hover:scale-110 duration-200 select-none">
           <Image
-            src={`/img/city-vector/${name}.svg`}
+            src={mapUrl}
             alt={`${name}-Map`}
             width="80"
             height="80"
@@ -24,4 +24,4 @@ const CountryItem = ({ name, isSelected }) => {
   );
 };
 
-export default CountryItem;
+export default CityItem;

@@ -1,19 +1,17 @@
-import Head from "next/head";
 import Image from "next/image";
 
 import { useState } from "react";
 
 import { motion } from "framer-motion";
-import CountryItem from "../components/CountryItem";
+import CityItem from "../components/CityItem";
 
 import { HiArrowSmLeft } from "react-icons/hi";
 import Link from "next/link";
+import { getAllCityPreviews } from "../lib/graphcms";
 
-export default function Home() {
+export default function Home({ cities }) {
   const [landing, setLanding] = useState(true);
   const [selectedCity, setSelectedCity] = useState(null);
-
-  const cities = ["Lunaris", "Munetoria"];
 
   return (
     <>
@@ -49,12 +47,13 @@ export default function Home() {
             >
               {cities.map((city) => (
                 <div
-                  key={city}
-                  onClick={() => setSelectedCity(city.toLowerCase())}
+                  key={city.cityName}
+                  onClick={() => setSelectedCity(city.cityName.toLowerCase())}
                 >
-                  <CountryItem
-                    name={city}
-                    isSelected={selectedCity == city.toLowerCase()}
+                  <CityItem
+                    name={city.cityName}
+                    mapUrl={city.cityMap.url}
+                    isSelected={selectedCity == city.cityName.toLowerCase()}
                   />
                 </div>
               ))}
@@ -107,3 +106,12 @@ export default function Home() {
     </>
   );
 }
+
+export const getStaticProps = async () => {
+  const data = await getAllCityPreviews();
+  return {
+    props: {
+      cities: data,
+    },
+  };
+};
