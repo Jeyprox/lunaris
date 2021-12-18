@@ -26,25 +26,29 @@ export async function getCityByName(name) {
     `
       query CityByName($name: String!) {
         city(where: {cityName: $name}, stage: PUBLISHED) {
-          cityName,
-          landingTitle,
-          landingSubtitle,
-          landingImage {
-            id,
-            url
-          },
-          cityDescription,
-          cityCoordinates,
-          citizenCount,
-          cityStatus,
-          cityColour {hex},
-          governmentPositions {
-            ingameName,
-            discordName
-            governmentPosition,
-            ministerPosition
-          },
-          server
+            cityName,
+            landingTitle,
+            landingSubtitle,
+            landingImage {
+                id,
+                url
+            },
+            cityDescription,
+            cityMap {
+                id,
+                url
+            }
+            cityCoordinates,
+            citizenCount,
+            cityStatus,
+            cityColour {hex},
+            governmentPositions {
+                ingameName,
+                discordName
+                governmentPosition,
+                ministerPosition
+            },
+            server
         }
         moreCities: cities(orderBy: cityRelevance_DESC, first: 3, where: {cityName_not_in: [$name]}) {
             cityName,
@@ -103,56 +107,4 @@ export async function getAllCityPreviews(preview) {
     { preview }
   );
   return data.posts;
-}
-
-export async function getCityAndSuggestions(name, preview) {
-  const data = await fetchAPI(
-    `
-      query PostBySlug($slug: String!, $stage: Stage!) {
-        post(stage: $stage, where: {slug: $slug}) {
-          title
-          slug
-          content {
-            html
-          }
-          date
-          ogImage: coverImage {
-            url(transformation: {image: {resize: {fit: crop, width: 2000, height: 1000}}})
-          }
-          coverImage {
-            url(transformation: {image: {resize: {fit: crop, width: 2000, height: 1000}}})
-          }
-          author {
-            name
-            picture {
-              url(transformation: {image: {resize: {fit: crop, width: 100, height: 100}}})
-            }
-          }
-        }
-        morePosts: posts(orderBy: date_DESC, first: 2, where: {slug_not_in: [$slug]}) {
-          title
-          slug
-          excerpt
-          date
-          coverImage {
-            url(transformation: {image: {resize: {fit: crop, width: 2000, height: 1000}}})
-          }
-          author {
-            name
-            picture {
-              url(transformation: {image: {resize: {fit: crop, width: 100, height: 100}}})
-            }
-          }
-        }
-      }
-    `,
-    {
-      preview,
-      variables: {
-        stage: preview ? "DRAFT" : "PUBLISHED",
-        slug,
-      },
-    }
-  );
-  return data;
 }

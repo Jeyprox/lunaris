@@ -1,14 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-const MainNav = (cityName) => {
-  const navList = [
-    "Join Us",
-    "Merchants",
-    cityName.cityName,
-    "Government",
-    "About",
-  ];
+const MainNav = ({ cityName }) => {
+  const navList = ["join us", "merchants", cityName, "government", "about"];
 
   return (
     <nav className="container mx-auto py-6">
@@ -23,11 +17,11 @@ const MainNav = (cityName) => {
             key={navItem}
           >
             <Link
-              href={`/${
+              href={
                 index == 2
-                  ? `/cities/${navItem.toLowerCase()}`
-                  : navItem.replace(/\ /g, "-").toLowerCase()
-              }`}
+                  ? `/cities/${navItem}`
+                  : `/${cityName}/${navItem.replace(/\ /g, "-")}`
+              }
             >
               {navItem}
             </Link>

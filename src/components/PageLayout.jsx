@@ -9,7 +9,7 @@ const PageLayout = ({ children }) => {
         <meta name="description" content="Lunaris homepage" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>{children}</main>
+      <main className="overflow-hidden">{children}</main>
       <footer>
         <FooterNav />
       </footer>
