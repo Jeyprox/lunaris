@@ -9,4 +9,10 @@
   .section {
     @apply container mx-auto my-24 px-8;
   }
+  .section-title {
+    @apply text-4xl font-serif uppercase mb-8;
+  }
+  .tag {
+    @apply text-gray-700 text-base py-1 px-1.5 font-serif uppercase border rounded;
+  }
 }

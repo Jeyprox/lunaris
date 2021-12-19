@@ -13,6 +13,17 @@ export default function Home({ cities }) {
   const [landing, setLanding] = useState(true);
   const [selectedCity, setSelectedCity] = useState(null);
 
+  const getCityById = (cityId) => {
+    if (cityId == null) return { cityName: "" };
+    const city = cities.find((city) => city.id == cityId);
+    if (city !== null) return city;
+    return { cityName: "" };
+  };
+
+  const convertName = (cityName) => {
+    return cityName.toLowerCase().replace(/\ /g, "-");
+  };
+
   return (
     <>
       <section className="h-screen container mx-auto p-4 flex flex-col justify-between items-center">
@@ -48,12 +59,12 @@ export default function Home({ cities }) {
               {cities.map((city) => (
                 <div
                   key={city.cityName}
-                  onClick={() => setSelectedCity(city.cityName.toLowerCase())}
+                  onClick={() => setSelectedCity(city.id)}
                 >
                   <CityItem
                     name={city.cityName}
                     mapUrl={city.cityMap.url}
-                    isSelected={selectedCity == city.cityName.toLowerCase()}
+                    isSelected={selectedCity == city.id}
                   />
                 </div>
               ))}
@@ -72,10 +83,14 @@ export default function Home({ cities }) {
               className="btn text-2xl disabled:cursor-not-allowed"
               disabled={selectedCity == null}
             >
-              <Link href={`/cities/${selectedCity}`}>
+              <Link
+                href={`/cities/${convertName(
+                  getCityById(selectedCity).cityName
+                )}`}
+              >
                 {selectedCity == null
                   ? "Select a city"
-                  : `Go to ${selectedCity}`}
+                  : `Go to ${getCityById(selectedCity).cityName}`}
               </Link>
             </button>
           )}

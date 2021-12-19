@@ -1,13 +1,41 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+
+import { Link as ScrollLink } from "react-scroll";
 
 const MainNav = ({ cityName }) => {
   const navList = ["join us", "merchants", cityName, "government", "about"];
 
   return (
     <nav className="container mx-auto py-6">
-      <ul className="flex justify-center items-center">
-        {navList.map((navItem, index) => (
+      <ul className="flex justify-center items-center text-xl font-serif uppercase">
+        <li className="px-8 py-1 hover:text-gray-500 duration-200">
+          <Link href="/join">Join Us</Link>
+        </li>
+        <li className="px-8 py-1 hover:text-gray-500 duration-200">
+          <Link href={`/shop/${cityName}`}>Merchants</Link>
+        </li>
+        <li className="font-sans text-3xl font-bold px-32">{cityName}</li>
+        <li className="px-8 py-1 hover:text-gray-500 duration-200">
+          <ScrollLink
+            to="about"
+            smooth={true}
+            duration={1000}
+            className="cursor-pointer"
+          >
+            About
+          </ScrollLink>
+        </li>
+        <li className="px-8 py-1 hover:text-gray-500 duration-200">
+          <ScrollLink
+            to="government"
+            smooth={true}
+            duration={1000}
+            className="cursor-pointer"
+          >
+            Government
+          </ScrollLink>
+        </li>
+        {/* {navList.map((navItem, index) => (
           <li
             className={`${
               index == 2
@@ -16,7 +44,7 @@ const MainNav = ({ cityName }) => {
             } text-gray-900 uppercase  duration-200 px-8 py-1`}
             key={navItem}
           >
-            <Link
+            <ScrollLink
               href={
                 index == 2
                   ? `/cities/${navItem}`
@@ -24,9 +52,9 @@ const MainNav = ({ cityName }) => {
               }
             >
               {navItem}
-            </Link>
+            </ScrollLink>
           </li>
-        ))}
+        ))} */}
         <li></li>
       </ul>
     </nav>

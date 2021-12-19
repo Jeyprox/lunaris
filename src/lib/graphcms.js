@@ -26,6 +26,7 @@ export async function getCityByName(name) {
     `
       query CityByName($name: String!) {
         city(where: {cityName: $name}, stage: PUBLISHED) {
+            id,
             cityName,
             landingTitle,
             landingSubtitle,
@@ -51,6 +52,7 @@ export async function getCityByName(name) {
             server
         }
         moreCities: cities(orderBy: cityRelevance_DESC, first: 3, where: {cityName_not_in: [$name]}) {
+            id,
             cityName,
             cityMap {
                 id,
@@ -74,6 +76,7 @@ export async function getAllCities() {
   const data = await fetchAPI(`
       {
         cities {
+          id,
           cityName
         }
       }
@@ -86,6 +89,7 @@ export async function getAllCityPreviews() {
     `
       {
         cities(orderBy: cityRelevance_DESC) {
+          id,
           cityName,
           cityMap {
             id,
