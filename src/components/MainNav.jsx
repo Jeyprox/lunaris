@@ -2,9 +2,7 @@ import Link from "next/link";
 
 import { Link as ScrollLink } from "react-scroll";
 
-const MainNav = ({ cityName }) => {
-  const navList = ["join us", "merchants", cityName, "government", "about"];
-
+const MainNav = ({ cityName, cityColour }) => {
   return (
     <nav className="container mx-auto py-6">
       <ul className="flex justify-center items-center text-xl font-serif uppercase">
@@ -14,12 +12,17 @@ const MainNav = ({ cityName }) => {
         <li className="px-8 py-1 hover:text-gray-500 duration-200">
           <Link href={`/shop/${cityName}`}>Merchants</Link>
         </li>
-        <li className="font-sans text-3xl font-bold px-32">{cityName}</li>
+        <li
+          className={`font-sans text-3xl font-bold px-32 select-none text-[${cityColour}]`}
+        >
+          {cityName}
+        </li>
         <li className="px-8 py-1 hover:text-gray-500 duration-200">
           <ScrollLink
             to="about"
             smooth={true}
             duration={1000}
+            offset={-100}
             className="cursor-pointer"
           >
             About
@@ -30,6 +33,7 @@ const MainNav = ({ cityName }) => {
             to="government"
             smooth={true}
             duration={1000}
+            offset={-100}
             className="cursor-pointer"
           >
             Government

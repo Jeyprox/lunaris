@@ -1,14 +1,11 @@
 import Image from "next/image";
 import ErrorPage from "next/error";
 import {
-  HiArrowSmRight,
-  HiArrowSmUp,
   HiChevronDown,
   HiLocationMarker,
   HiMap,
   HiPencil,
   HiTag,
-  HiUsers,
 } from "react-icons/hi";
 import { FaDiscord } from "react-icons/fa";
 import { RiGovernmentFill } from "react-icons/ri";
@@ -16,8 +13,28 @@ import MainNav from "../../components/MainNav";
 import { getAllCities, getCityByName } from "../../lib/graphcms";
 import Link from "next/link";
 import { Element, animateScroll } from "react-scroll";
+import { useEffect, useRef } from "react";
+import { FXAASkinViewer, WalkingAnimation } from "skinview3d";
 
 const City = ({ city, moreCities }) => {
+  const skinRef = useRef([]);
+
+  useEffect(() => {
+    city.governmentPositions.forEach((player, index) => {
+      const getSkinViewer = (canvas, playerName) => {
+        let skinViewer = new FXAASkinViewer({
+          canvas,
+          width: 144,
+          height: 196,
+          background: city.cityColour.hex,
+          skin: `https://minotar.net/skin/${playerName}`,
+        });
+        skinViewer.animations.add(WalkingAnimation);
+      };
+      getSkinViewer(skinRef.current[index], player.ingameName);
+    });
+  }, [city]);
+
   if (!city?.cityName) {
     return <ErrorPage statusCode={404} />;
   }
@@ -37,7 +54,10 @@ const City = ({ city, moreCities }) => {
         <div>
           <section className="w-screen h-[100vh]">
             <header>
-              <MainNav cityName={city.cityName.toLowerCase()} />
+              <MainNav
+                cityName={city.cityName.toLowerCase()}
+                cityColour={city.cityColour.hex}
+              />
             </header>
             <div className="relative h-4/5">
               <div className="-z-10 overflow-hidden absolute w-full h-full">
@@ -130,16 +150,12 @@ const City = ({ city, moreCities }) => {
             <Element name="government">
               <h1 className="section-title">Government Positions</h1>
               <div className="grid grid-cols-2">
-                {city.governmentPositions.map((player) => (
+                {city.governmentPositions.map((player, index) => (
                   <div className="flex mx-2" key={player.userId}>
-                    <div className="py-2 px-1 rounded-md border-2">
-                      <Image
-                        src={`https://crafatar.com/renders/body/${player.userId}?size=196?scale=10&overlay`}
-                        alt={`${player.ingameName} Skin`}
-                        width={144}
-                        height={196}
-                        objectFit="contain"
-                      ></Image>
+                    <div className="overflow-hidden rounded-md">
+                      <canvas
+                        ref={(el) => (skinRef.current[index] = el)}
+                      ></canvas>
                     </div>
                     <div className="ml-8 grid grid-cols-3 gap-y-2 gap-x-4 place-content-center">
                       <div className="flex items-center">
