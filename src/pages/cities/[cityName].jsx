@@ -20,6 +20,7 @@ const City = ({ city, moreCities }) => {
   const skinRef = useRef([]);
 
   useEffect(() => {
+    if (!city) return;
     city.governmentPositions.forEach((player, index) => {
       const getSkinViewer = (canvas, playerName) => {
         let skinViewer = new FXAASkinViewer({
@@ -35,10 +36,6 @@ const City = ({ city, moreCities }) => {
     });
   }, [city]);
 
-  if (!city?.cityName) {
-    return <ErrorPage statusCode={404} />;
-  }
-
   const getMapUrl = (server) => {
     switch (server) {
       case "Rathnir":
@@ -50,7 +47,7 @@ const City = ({ city, moreCities }) => {
 
   return (
     <>
-      {city.cityName && (
+      {city && (
         <div>
           <section className="w-screen h-[100vh]">
             <header>

@@ -7,7 +7,14 @@ const MainNav = ({ cityName, cityColour }) => {
     <nav className="container mx-auto py-6">
       <ul className="flex justify-center items-center text-xl font-serif uppercase">
         <li className="px-8 py-1 hover:text-gray-500 duration-200">
-          <Link href="/join">Join Us</Link>
+          <Link
+            href={{
+              pathname: "/cities/apply",
+              query: { cityOrigin: cityName },
+            }}
+          >
+            Join Us
+          </Link>
         </li>
         <li className="px-8 py-1 hover:text-gray-500 duration-200">
           <Link href={`/shop/${cityName}`}>Merchants</Link>
