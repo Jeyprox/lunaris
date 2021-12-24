@@ -1,6 +1,6 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ["media.graphcms.com", "crafatar.com"],
+    domains: ["media.graphcms.com", "minotar.net"],
   },
 };
