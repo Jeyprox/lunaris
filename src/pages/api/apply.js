@@ -7,10 +7,11 @@ const sendApplication = async ({ body }, res) => {
       authorization: `Bearer ${process.env.GRAPHCMS_AUTH_TOKEN}`,
     },
   });
-  const { cityName, info, nations, professions } = body;
-  const { createApplication } = await graphcms.request(
-    `
-        mutation sendApplication($cityName: String!, $discordName: String!, $ingameName: String!, $joinDate: Float!, $joinReason: String!, $timeZone: Int!, $ingameProfessions: Json!, $recentCitizenships: Json!) {
+  const { cityName, info, joinDate, nations, professions } = body;
+  try {
+    const response = await graphcms.request(
+      `
+        mutation sendApplication($cityName: String!, $discordName: String!, $ingameName: String!, $joinDate: Json!, $joinReason: String!, $timeZone: Int!, $ingameProfessions: Json!, $recentCitizenships: Json!) {
           createApplication(
             data: {city: {connect: {cityName: $cityName}}, discordName: $discordName, ingameName: $ingameName, joinDate: $joinDate, joinReason: $joinReason, timeZone: $timeZone, ingameProfessions: $ingameProfessions, recentCitizenships: $recentCitizenships}
           ) {
@@ -18,19 +19,21 @@ const sendApplication = async ({ body }, res) => {
           }
         }
       `,
-    {
-      cityName,
-      discordName: info.discordtag,
-      ingameName: info.username,
-      joinDate: info.joindate,
-      joinReason: info.joinreason,
-      timeZone: info.timezone,
-      ingameProfessions: professions,
-      recentCitizenships: nations,
-    }
-  );
-  if (!createApplication) res.status(500).error("Couldn't create application");
-  res.status(201).json({ id: createApplication.id });
+      {
+        cityName,
+        discordName: info.discordtag,
+        ingameName: info.username,
+        joinDate,
+        joinReason: info.joinreason,
+        timeZone: info.timezone,
+        ingameProfessions: professions,
+        recentCitizenships: nations,
+      }
+    );
+    res.status(200).json({ id: response.createApplication.id });
+  } catch (err) {
+    res.status(400).json({ error: err.response.errors[0].message });
+  }
 };
 
 export default sendApplication;

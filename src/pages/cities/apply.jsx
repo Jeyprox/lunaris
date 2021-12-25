@@ -1,3 +1,4 @@
+import debounce from "debounce";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -11,8 +12,17 @@ const Application = ({ cities }) => {
   const [selectedCity, setSelectedCity] = useState(cityOrigin);
   const [nations, setNations] = useState([]);
   const [professions, setProfessions] = useState([]);
-  const [applicationSent, setApplicationSent] = useState(false);
-  const { register, handleSubmit, control, getValues, resetField } = useForm();
+  const [applicationStatus, setApplicationStatus] = useState({});
+  const {
+    register,
+    handleSubmit,
+    control,
+    getValues,
+    trigger,
+    resetField,
+    setError,
+    formState: { errors },
+  } = useForm({ mode: "onChange" });
   const username = useWatch({
     control,
     name: "username",
@@ -37,21 +47,40 @@ const Application = ({ cities }) => {
   };
 
   const onSubmit = async () => {
-    if (!selectedCity || !nations || !professions || applicationSent) return;
+    if (!professions.length) {
+      setError("professions", {
+        tyoe: "required",
+        message: "Enter at least one profession",
+      });
+      return;
+    }
     const cityName = selectedCity.replace(/(\b[a-z](?!\s))/g, (letter) =>
       letter.toUpperCase()
     );
+    const joinDate = [
+      getValues("time_days"),
+      getValues("time_weeks"),
+      getValues("time_months"),
+    ];
     const res = await fetch("/api/apply", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
         cityName,
         info: getValues(),
+        joinDate,
         nations,
         professions,
       }),
     });
-    if (!res.error) setApplicationSent(true);
+    const data = await res.json();
+    if (data.id) {
+      const message = { status: 200, message: "Application was sent" };
+      setApplicationStatus(message);
+      return;
+    }
+    const error = { status: 400, message: data.error };
+    setApplicationStatus(error);
   };
 
   return (
@@ -60,31 +89,63 @@ const Application = ({ cities }) => {
         <h1 className="text-3xl w-full text-center mb-6 uppercase font-bold text-gray-900">
           Select a city
         </h1>
-        <div className="flex justify-around items-center">
+        <div className="relative flex justify-around items-center">
           {cities.map((city) => (
-            <div
+            <label
               onClick={() => setSelectedCity(city.cityName.toLowerCase())}
-              className={` cursor-pointer border-2 border-gray-400 rounded hover:bg-gray-200/50 ${
+              className={`cursor-pointer border-2 border-gray-400 rounded px-2 py-1 hover:bg-gray-200/50 flex gap-x-2 items-center ${
                 city.cityName.toLowerCase() == selectedCity &&
                 "!bg-blue-300 border-blue-300"
               }`}
               key={city.cityName}
             >
-              <h1 className="px-2 py-1 text-xl font-serif uppercase text-gray-800">
+              <input
+                className="hidden"
+                type="radio"
+                {...register("city", { required: "Required field" })}
+              />
+              <span className="text-xl font-serif uppercase text-gray-800">
                 {city.cityName}
-              </h1>
-            </div>
+              </span>
+            </label>
           ))}
+          <p className="form-error-message mt-2">{errors.city?.message}</p>
         </div>
       </section>
-      <section className="container xl:max-w-4xl mx-auto mb-24">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="mt-16 grid grid-cols-2 gap-x-8 gap-y-12"
-        >
-          <div className="flex items-center">
-            <div className="relative w-16 h-16 mr-6">
-              {username.length >= 3 ? (
+      <section className="container xl:max-w-xl mx-auto my-24">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-y-12">
+          <div className="flex items-end justify-between gap-x-8">
+            <label htmlFor="username" className="relative">
+              <span className="block text-xl text-gray-800 font-semibold uppercase mb-1">
+                Minecraft Name
+                <strong className="ml-1 text-gray-400">*</strong>
+              </span>
+              <input
+                className="form-input-field form-text-input"
+                type="text"
+                aria-invalid={errors.username ? true : false}
+                placeholder="Example"
+                {...register("username", {
+                  required: "Required field",
+                  maxLength: {
+                    value: 16,
+                    message:
+                      "Minecraft name can't be longer than 16 characters",
+                  },
+                  minLength: 3,
+                  pattern: {
+                    value: /^\S+$/,
+                    message: "Minecraft names can't have spaces",
+                  },
+                  onChange: () => debounce(trigger("username"), 20),
+                })}
+              />
+              <p role="alert" className="form-error-message">
+                {errors.username?.message}
+              </p>
+            </label>
+            <div className="relative w-16 h-16">
+              {!errors.username && username.length > 3 ? (
                 <Image
                   src={`https://minotar.net/avatar/${username}/64`}
                   alt={username}
@@ -99,90 +160,138 @@ const Application = ({ cities }) => {
                 </div>
               )}
             </div>
-            <label className="flex flex-col">
-              <span className="text-xl text-gray-800 font-semibold uppercase mb-1">
-                Minecraft Name
-              </span>
-              <input
-                className="focus:ring-blue-300 text-gray-700 border-2 rounded placeholder:font-serif placeholder:font-normal font-semibold uppercase px-2 py-1.5"
-                type="text"
-                placeholder="Example"
-                {...register("username", {
-                  required: true,
-                  maxLength: 16,
-                  minLength: 3,
-                  pattern: /^\S*$/,
-                })}
-              />
-            </label>
           </div>
-          <div className="flex items-center">
-            <label className="flex flex-col">
-              <span className="text-xl text-gray-800 font-semibold uppercase mb-1">
-                Discord Tag
-              </span>
-              <div className="flex">
-                <input
-                  className="focus:ring-blue-300 text-gray-700 border-2 rounded placeholder:font-serif placeholder:font-normal font-semibold uppercase px-2 py-1.5"
-                  type="text"
-                  placeholder="Example#9999"
-                  {...register("discordtag", {
-                    required: true,
-                    maxLength: 32,
-                    minLength: 2,
-                    pattern: /\d{4}$/,
-                  })}
-                />
-                <button className="ml-2 p-1.5 border-2 hover:bg-gray-200/50 border-gray-500 rounded">
-                  <HiCheck className="text-2xl" />
-                </button>
-                <button className="ml-2 p-1.5 border-2 hover:bg-gray-200/50 border-gray-500 rounded">
-                  <HiRefresh className="text-2xl" />
-                </button>
-              </div>
-            </label>
-          </div>
-          <label>
+          <label className="w-full grid gap-y-1">
             <span className="text-xl text-gray-800 font-semibold uppercase">
-              Time On Stoneworks
+              Discord Tag
+              <strong className="ml-1 text-gray-400">*</strong>
             </span>
-            <div className="flex items-center mt-2">
+            <div className="relative flex gap-x-2">
               <input
-                className="number-input focus:ring-blue-300 border-2 text-gray-700 rounded px-1.5 py-1 w-12 text-center text-base font-bold"
-                type="number"
-                step={0.1}
-                placeholder="1.5"
-                {...register("joindate", {
-                  required: true,
-                  max: 12,
-                  valueAsNumber: true,
+                className="form-input-field form-text-input w-full"
+                type="text"
+                aria-invalid={errors.discordtag ? true : false}
+                placeholder="Example#9999"
+                {...register("discordtag", {
+                  required: "Required field",
+                  maxLength: {
+                    value: 32,
+                    message: "Discord name can't be longer than 32 characters",
+                  },
+                  minLength: 2,
+                  pattern: {
+                    value: /\d{4}$/,
+                    message: "Don't forget the identifier (eg. #9999)",
+                  },
                 })}
               />
-              <p className="ml-2 text-lg font-serif text-gray-700 uppercase">
-                Months
+              <p role="alert" className="form-error-message">
+                {errors.discordtag?.message}
               </p>
+              <button className="p-1.5 border-2 hover:bg-gray-200/50 border-gray-500 rounded">
+                <HiCheck className="text-2xl" />
+              </button>
+              <button className="p-1.5 border-2 hover:bg-gray-200/50 border-gray-500 rounded">
+                <HiRefresh className="text-2xl" />
+              </button>
             </div>
           </label>
-          <label>
+          <label className="w-full grid gap-y-1">
+            <span className="text-xl text-gray-800 font-semibold uppercase">
+              Time On Stoneworks
+              <strong className="ml-1 text-gray-400">*</strong>
+            </span>
+            <div className="flex justify-between gap-x-4">
+              <div className="relative flex items-center gap-x-2">
+                <input
+                  className="number-input form-input-field w-12 text-center text-base font-bold"
+                  type="number"
+                  aria-invalid={errors.time_days ? true : false}
+                  placeholder="4"
+                  {...register("time_days", {
+                    required: "Required field",
+                    min: 0,
+                    max: { value: 6, message: "Max. 6 days" },
+                    valueAsNumber: true,
+                  })}
+                />
+                <p role="alert" className="form-error-message">
+                  {errors.time_days?.message}
+                </p>
+                <p className="text-lg font-serif text-gray-700 uppercase">
+                  Day(s)
+                </p>
+              </div>
+              <div className="relative flex items-center gap-x-2">
+                <input
+                  className="number-input form-input-field w-12 text-center text-base font-bold"
+                  type="number"
+                  aria-invalid={errors.time_weeks ? true : false}
+                  placeholder="1"
+                  {...register("time_weeks", {
+                    required: "Required field",
+                    min: 0,
+                    max: { value: 4, message: "Max. 4 weeks" },
+                    valueAsNumber: true,
+                  })}
+                />
+                <p className="form-error-message">
+                  {errors.time_weeks?.message}
+                </p>
+                <p className="text-lg font-serif text-gray-700 uppercase">
+                  Week(s)
+                </p>
+              </div>
+              <div className="relative flex items-center gap-x-2">
+                <input
+                  className="number-input form-input-field w-12 text-center text-base font-bold"
+                  type="number"
+                  aria-invalid={errors.time_months ? true : false}
+                  placeholder="3"
+                  {...register("time_months", {
+                    required: "Required field",
+                    min: 0,
+                    max: { value: 64, message: "Max. 64 months" },
+                    valueAsNumber: true,
+                  })}
+                />
+                <p className="form-error-message">
+                  {errors.time_months?.message}
+                </p>
+                <p className="text-lg font-serif text-gray-700 uppercase">
+                  Month(s)
+                </p>
+              </div>
+            </div>
+          </label>
+          <label className="grid gap-y-1">
             <span className="text-xl text-gray-800 font-semibold uppercase">
               Your timezone
+              <strong className="ml-1 text-gray-400">*</strong>
             </span>
-            <div className="flex items-center mt-2">
-              <p className="mr-2 text-lg font-serif text-gray-700 uppercase">
-                GMT
-              </p>
+            <div className="relative flex items-center gap-x-2">
+              <p className="text-lg font-serif text-gray-700 uppercase">GMT</p>
               <input
-                className="number-input focus:ring-blue-300 border-2 text-gray-700 rounded px-1.5 py-1 w-12 text-center text-base font-bold"
+                className="number-input form-input-field w-12 text-center font-bold"
                 type="number"
-                step={1}
+                aria-invalid={errors.timezone ? true : false}
                 placeholder="+1"
                 {...register("timezone", {
-                  required: true,
-                  min: -12,
-                  max: 12,
+                  required: "Required field",
+                  min: {
+                    value: -12,
+                    message: "Min. timezone difference from gmt is 12",
+                  },
+                  max: {
+                    value: 12,
+                    message: "Max. timezone difference from gmt is 12",
+                  },
                   valueAsNumber: true,
                 })}
               />
+              <p role="alert" className="form-error-message">
+                {errors.timezone?.message}
+              </p>
             </div>
           </label>
           <div>
@@ -194,7 +303,7 @@ const Application = ({ cities }) => {
                 <input
                   className="w-full border-2 border-gray-500 rounded placeholder:font-serif py-1.5 px-2"
                   type="text"
-                  placeholder="Tortuga, Uldarash..."
+                  placeholder="Plagatea, Simulami..."
                   {...register("nations", { required: false })}
                 />
                 <button
@@ -224,18 +333,23 @@ const Application = ({ cities }) => {
               ))}
             </div>
           </div>
-          <div>
+          <div className="relative">
             <label>
               <span className="text-xl text-gray-800 font-semibold uppercase mb-1">
                 Ideas for Profession
+                <strong className="ml-1 text-gray-400">*</strong>
               </span>
               <div className="flex">
                 <input
                   className="w-full border-2 border-gray-500 rounded placeholder:font-serif py-1.5 px-2"
                   type="text"
+                  aria-invalid={errors.professions ? true : false}
                   placeholder="Builder, Politician..."
                   {...register("professions", { required: false })}
                 />
+                <p role="alert" className="form-error-message">
+                  {errors.professions?.message}
+                </p>
                 <button
                   onClick={() => addProfession(getValues("professions"))}
                   className="ml-2 border-2 border-gray-500 hover:bg-gray-200/50 duration-200 rounded px-2 py-1.5"
@@ -263,33 +377,45 @@ const Application = ({ cities }) => {
               ))}
             </div>
           </div>
-          <label className="col-span-2">
+          <label className="grid gap-y-1">
             <span className="text-xl text-gray-800 font-semibold uppercase">
               Why do you want to join Lunaris
+              <strong className="ml-1 text-gray-400">*</strong>
             </span>
-            <div className="relative mt-1">
+            <div className="relative">
               <textarea
                 className="border-2 border-gray-500 rounded placeholder:font-serif w-full max-h-48"
                 type="text"
+                aria-invalid={errors.joinreason ? true : false}
                 maxLength="200"
                 placeholder="Explain why you want to join Lunaris"
-                {...register("joinreason", { required: true, maxLength: 200 })}
+                {...register("joinreason", {
+                  required: "Required field",
+                  maxLength: 200,
+                })}
               />
+              <p role="alert" className="form-error-message">
+                {errors.joinreason?.message}
+              </p>
               <span className="absolute bottom-2 right-4 text-gray-500 font-semibold text-sm">
                 {joinreason.length}/200
               </span>
             </div>
+            <p className="uppercase text-gray-600 font-semibold mt-6">
+              <strong className="mr-1">*</strong>
+              Required Field
+            </p>
           </label>
-          <div className="col-span-2 w-1/4 mx-auto">
+          <div className="w-2/5 mx-auto">
             <input
               type="submit"
               className={`cursor-pointer w-full btn text-gray-800 font-bold border-gray-500 ${
-                applicationSent && "!border-green-400"
-              }`}
+                applicationStatus.status == 200 && "!border-green-400"
+              } ${applicationStatus.status == 400 && "!border-red-400"}`}
             />
-            {applicationSent && (
+            {applicationStatus.status != -1 && (
               <p className="text-base text-center uppercase font-semibold text-gray-500 mt-2">
-                Application was sent
+                {applicationStatus.message}
               </p>
             )}
           </div>
