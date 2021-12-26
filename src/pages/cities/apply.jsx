@@ -92,10 +92,9 @@ const Application = ({ cities }) => {
 
   const verifyUser = async (e) => {
     e.preventDefault();
-    if (errors.discordtag && errors.discordtag.type != "finish-verification")
-      return;
     const discordName = getValues("discordtag");
     if (discordName.length < 6) return;
+    if (errors.discordtag?.type === "pattern") return;
     if (joinStatus == 0 || joinStatus == 1) {
       const res = await fetch("/api/discord/verify-user", {
         method: "POST",
@@ -108,12 +107,14 @@ const Application = ({ cities }) => {
       setJoinStatus(hasJoined);
       switch (hasJoined) {
         case 1:
+          clearErrors("discordtag");
           setError("discordtag", {
             type: "notjoined",
             message: "Please join the discord first",
           });
           break;
         case 2:
+          clearErrors("discordtag");
           setError("discordtag", {
             type: "finish-verification",
             message: "Please finish your verification in discord",
