@@ -1,4 +1,3 @@
-import debounce from "debounce";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -12,15 +11,16 @@ const Application = ({ cities }) => {
   const [selectedCity, setSelectedCity] = useState(cityOrigin);
   const [nations, setNations] = useState([]);
   const [professions, setProfessions] = useState([]);
+  const [joinStatus, setJoinStatus] = useState(0);
   const [applicationStatus, setApplicationStatus] = useState({});
   const {
     register,
     handleSubmit,
     control,
     getValues,
-    trigger,
     resetField,
     setError,
+    clearErrors,
     formState: { errors },
   } = useForm({ mode: "onChange" });
   const username = useWatch({
@@ -49,8 +49,15 @@ const Application = ({ cities }) => {
   const onSubmit = async () => {
     if (!professions.length) {
       setError("professions", {
-        tyoe: "required",
+        type: "required",
         message: "Enter at least one profession",
+      });
+      return;
+    }
+    if (joinStatus !== 3) {
+      setError("discordtag", {
+        type: "missing-verification",
+        message: "Please finish the discord name verification",
       });
       return;
     }
@@ -81,6 +88,57 @@ const Application = ({ cities }) => {
     }
     const error = { status: 400, message: data.error };
     setApplicationStatus(error);
+  };
+
+  const verifyUser = async (e) => {
+    e.preventDefault();
+    if (errors.discordtag && errors.discordtag.type != "finish-verification")
+      return;
+    const discordName = getValues("discordtag");
+    if (discordName.length < 6) return;
+    if (joinStatus == 0 || joinStatus == 1) {
+      const res = await fetch("/api/discord/verify-user", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({
+          discordName,
+        }),
+      });
+      const { hasJoined } = await res.json();
+      setJoinStatus(hasJoined);
+      switch (hasJoined) {
+        case 1:
+          setError("discordtag", {
+            type: "notjoined",
+            message: "Please join the discord first",
+          });
+          break;
+        case 2:
+          setError("discordtag", {
+            type: "finish-verification",
+            message: "Please finish your verification in discord",
+          });
+          break;
+      }
+    } else if (joinStatus == 2) {
+      const res = await fetch("/api/discord/finish-verification", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({
+          discordName,
+        }),
+      });
+      const { finished } = await res.json();
+      if (finished) {
+        setJoinStatus(3);
+        clearErrors("discordtag");
+        return;
+      }
+      setError("discordtag", {
+        type: "verification-error",
+        message: "There was an issue while trying to verify your discord name",
+      });
+    }
   };
 
   return (
@@ -137,7 +195,6 @@ const Application = ({ cities }) => {
                     value: /^\S+$/,
                     message: "Minecraft names can't have spaces",
                   },
-                  onChange: () => debounce(trigger("username"), 20),
                 })}
               />
               <p role="alert" className="form-error-message">
@@ -161,41 +218,48 @@ const Application = ({ cities }) => {
               )}
             </div>
           </div>
-          <label className="w-full grid gap-y-1">
-            <span className="text-xl text-gray-800 font-semibold uppercase">
-              Discord Tag
-              <strong className="ml-1 text-gray-400">*</strong>
-            </span>
-            <div className="relative flex gap-x-2">
-              <input
-                className="form-input-field form-text-input w-full"
-                type="text"
-                aria-invalid={errors.discordtag ? true : false}
-                placeholder="Example#9999"
-                {...register("discordtag", {
-                  required: "Required field",
-                  maxLength: {
-                    value: 32,
-                    message: "Discord name can't be longer than 32 characters",
-                  },
-                  minLength: 2,
-                  pattern: {
-                    value: /\d{4}$/,
-                    message: "Don't forget the identifier (eg. #9999)",
-                  },
-                })}
-              />
-              <p role="alert" className="form-error-message">
-                {errors.discordtag?.message}
-              </p>
-              <button className="p-1.5 border-2 hover:bg-gray-200/50 border-gray-500 rounded">
-                <HiCheck className="text-2xl" />
-              </button>
-              <button className="p-1.5 border-2 hover:bg-gray-200/50 border-gray-500 rounded">
-                <HiRefresh className="text-2xl" />
-              </button>
-            </div>
-          </label>
+          <div className="flex gap-x-2 items-end">
+            <label className="w-full grid gap-y-1">
+              <span className="text-xl text-gray-800 font-semibold uppercase">
+                Discord Tag
+                <strong className="ml-1 text-gray-400">*</strong>
+              </span>
+              <div className="relative flex gap-x-2">
+                <input
+                  className="form-input-field form-text-input w-full"
+                  type="text"
+                  aria-invalid={errors.discordtag ? true : false}
+                  placeholder="Example#9999"
+                  {...register("discordtag", {
+                    required: "Required field",
+                    maxLength: {
+                      value: 32,
+                      message:
+                        "Discord name can't be longer than 32 characters",
+                    },
+                    minLength: 2,
+                    pattern: {
+                      value: /\d{4}$/,
+                      message: "Don't forget the identifier (eg. #9999)",
+                    },
+                  })}
+                />
+                <p role="alert" className="form-error-message">
+                  {errors.discordtag?.message}
+                </p>
+              </div>
+            </label>
+            <button
+              onClick={(e) => verifyUser(e)}
+              className={`px-2 py-1.5 font-semibold uppercase font-serif border-2 hover:bg-gray-200/50 border-gray-500 rounded ${
+                joinStatus == 3 && "border-green-400"
+              } ${joinStatus == 2 && "border-orange-400"} ${
+                joinStatus == 1 && "border-red-400"
+              }`}
+            >
+              Verify
+            </button>
+          </div>
           <label className="w-full grid gap-y-1">
             <span className="text-xl text-gray-800 font-semibold uppercase">
               Time On Stoneworks
