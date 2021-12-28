@@ -15,7 +15,8 @@ const sendApplication = async ({ body }, res) => {
     },
   });
   await client.login(process.env.DISCORD_BOT_TOKEN);
-  const { cityName, info, joinDate, nations, professions } = body;
+  const { info, nations, professions } = body;
+  const joinDate = [info.time_days, info.time_weeks, info.time_months];
   try {
     const response = await graphcms.request(
       `
@@ -28,7 +29,7 @@ const sendApplication = async ({ body }, res) => {
         }
       `,
       {
-        cityName,
+        cityName: info.city,
         discordName: info.discordtag,
         ingameName: info.username,
         joinDate,
@@ -49,7 +50,7 @@ const sendApplication = async ({ body }, res) => {
           info.discordtag,
           `https://cdn.discordapp.com/avatars/${match.user.id}/${match.user.avatar}.png`
         )
-        .setDescription(`An application for the city of ${cityName}`)
+        .setDescription(`An application for the city of ${info.city}`)
         .addFields(
           { name: "Ingame Name", value: info.username },
           { name: "Join Date", value: formattedDate },
@@ -71,8 +72,9 @@ const sendApplication = async ({ body }, res) => {
       return;
     }
   } catch (err) {
-    if (err.message) res.status(400).json({ error: err.message });
-    else res.status(400).json({ error: err.response.errors[0].message });
+    if (err.response.errors)
+      res.status(400).json({ error: err.response.errors[0].message });
+    else res.status(400).json({ error: err.message });
   }
 };
 

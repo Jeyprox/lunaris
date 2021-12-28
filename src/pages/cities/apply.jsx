@@ -8,10 +8,9 @@ import { getAllCityPreviews } from "../../lib/graphcms";
 const Application = ({ cities }) => {
   const router = useRouter();
   const { cityOrigin } = router.query;
-  const [selectedCity, setSelectedCity] = useState(cityOrigin);
   const [nations, setNations] = useState([]);
   const [professions, setProfessions] = useState([]);
-  const [joinStatus, setJoinStatus] = useState(2);
+  const [joinStatus, setJoinStatus] = useState(0);
   const [applicationStatus, setApplicationStatus] = useState({});
   const {
     register,
@@ -22,7 +21,7 @@ const Application = ({ cities }) => {
     setError,
     clearErrors,
     formState: { errors },
-  } = useForm({ mode: "onChange" });
+  } = useForm({ mode: "onChange", defaultValues: { city: cityOrigin } });
   const username = useWatch({
     control,
     name: "username",
@@ -32,6 +31,11 @@ const Application = ({ cities }) => {
     control,
     name: "joinreason",
     defaultValue: "",
+  });
+  const selectedCity = useWatch({
+    control,
+    name: "city",
+    defaultValue: cityOrigin,
   });
 
   const addNation = (nation) => {
@@ -61,21 +65,11 @@ const Application = ({ cities }) => {
       });
       return;
     }
-    const cityName = selectedCity.replace(/(\b[a-z](?!\s))/g, (letter) =>
-      letter.toUpperCase()
-    );
-    const joinDate = [
-      getValues("time_days"),
-      getValues("time_weeks"),
-      getValues("time_months"),
-    ];
     const res = await fetch("/api/apply", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
-        cityName,
         info: getValues(),
-        joinDate,
         nations,
         professions,
       }),
@@ -152,16 +146,16 @@ const Application = ({ cities }) => {
         <div className="relative flex justify-around items-center">
           {cities.map((city) => (
             <label
-              onClick={() => setSelectedCity(city.cityName.toLowerCase())}
               className={`cursor-pointer border-2 border-gray-400 rounded px-2 py-1 hover:bg-gray-200/50 flex gap-x-2 items-center ${
-                city.cityName.toLowerCase() == selectedCity &&
-                "!bg-blue-300 border-blue-300"
+                city.cityName === selectedCity && "!bg-blue-300 border-blue-300"
               }`}
               key={city.cityName}
             >
               <input
                 className="hidden"
                 type="radio"
+                name={city.cityName}
+                value={city.cityName}
                 {...register("city", { required: "Required field" })}
               />
               <span className="text-xl font-serif uppercase text-gray-800">
