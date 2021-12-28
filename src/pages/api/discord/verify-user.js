@@ -6,9 +6,11 @@ import {
   MessageEmbed,
 } from "discord.js";
 import fetchUserByName from "../../../lib/discord/fetchUserByName";
-
-const applicationChannel = "924137050100338708";
-const applicationRole = "924370022414053436";
+import {
+  applicationChannel,
+  applicationRole,
+  guildColor,
+} from "../../../lib/discord/guildIds";
 
 const client = new Client({
   intents: [
@@ -48,7 +50,7 @@ client.on("interactionCreate", async (interaction) => {
       .setStyle("PRIMARY");
     const verificationRow = new MessageActionRow().addComponents(verifyButton);
     const verificationEmbed = new MessageEmbed()
-      .setColor("#0c5fb0")
+      .setColor(guildColor)
       .setTitle("Discord Verification")
       .setAuthor(
         `${user.username}#${user.discriminator}`,

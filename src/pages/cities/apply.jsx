@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { HiCheck, HiPlus, HiRefresh, HiX } from "react-icons/hi";
+import { HiPlus, HiX } from "react-icons/hi";
 import { getAllCityPreviews } from "../../lib/graphcms";
 
 const Application = ({ cities }) => {
@@ -11,7 +11,7 @@ const Application = ({ cities }) => {
   const [selectedCity, setSelectedCity] = useState(cityOrigin);
   const [nations, setNations] = useState([]);
   const [professions, setProfessions] = useState([]);
-  const [joinStatus, setJoinStatus] = useState(0);
+  const [joinStatus, setJoinStatus] = useState(2);
   const [applicationStatus, setApplicationStatus] = useState({});
   const {
     register,
@@ -137,8 +137,9 @@ const Application = ({ cities }) => {
       }
       setError("discordtag", {
         type: "verification-error",
-        message: "There was an issue while trying to verify your discord name",
+        message: "Your verification failed, please restart the process",
       });
+      setJoinStatus(0);
     }
   };
 
@@ -372,7 +373,9 @@ const Application = ({ cities }) => {
                   {...register("nations", { required: false })}
                 />
                 <button
-                  onClick={() => addNation(getValues("nations"))}
+                  onClick={(e) => (
+                    e.preventDefault(), addNation(getValues("nations"))
+                  )}
                   className="ml-2 border-2 border-gray-500 hover:bg-gray-200/50 duration-200 rounded px-2 py-1.5"
                 >
                   <HiPlus className="text-xl" />
@@ -416,7 +419,9 @@ const Application = ({ cities }) => {
                   {errors.professions?.message}
                 </p>
                 <button
-                  onClick={() => addProfession(getValues("professions"))}
+                  onClick={(e) => (
+                    e.preventDefault(), addProfession(getValues("professions"))
+                  )}
                   className="ml-2 border-2 border-gray-500 hover:bg-gray-200/50 duration-200 rounded px-2 py-1.5"
                 >
                   <HiPlus className="text-xl" />
