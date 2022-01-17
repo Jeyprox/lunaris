@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply bg-gray-100;
+  }
   .btn {
     @apply text-gray-100 font-serif text-lg uppercase px-4 py-2 border-2 hover:bg-gray-200/50 duration-200;
   }
@@ -27,9 +30,9 @@
     @apply absolute mt-1 top-full text-sm uppercase font-semibold text-red-400 select-none;
   }
   .form-input-field {
-    @apply focus:ring-blue-300 border-2 text-gray-700 rounded px-2 py-1;
+    @apply focus:ring-blue-300 border-2 text-gray-700 rounded px-2 py-1 bg-inherit;
   }
   .form-text-input {
-    @apply placeholder:font-serif placeholder:font-normal font-semibold uppercase py-1.5;
+    @apply placeholder:font-serif placeholder:font-normal font-semibold py-1.5;
   }
 }

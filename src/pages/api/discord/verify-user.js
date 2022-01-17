@@ -1,10 +1,4 @@
-import {
-  Client,
-  Intents,
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
-} from "discord.js";
+import { Client, Intents } from "discord.js";
 import { fetchUserByName } from "../../../lib/discord/discordFetch";
 import { applicationChannel } from "../../../lib/discord/guildIds";
 

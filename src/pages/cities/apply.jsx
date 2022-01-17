@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { HiPlus, HiX } from "react-icons/hi";
 import { getAllCityPreviews } from "../../lib/graphcms";
@@ -146,8 +146,9 @@ const Application = ({ cities }) => {
         <div className="relative flex justify-around items-center">
           {cities.map((city) => (
             <label
-              className={`cursor-pointer border-2 border-gray-400 rounded px-2 py-1 hover:bg-gray-200/50 flex gap-x-2 items-center ${
-                city.cityName === selectedCity && "!bg-blue-300 border-blue-300"
+              className={`cursor-pointer border-2 border-gray-500 rounded px-3 py-1 hover:bg-gray-200/50 ${
+                city.cityName === selectedCity &&
+                "!bg-blue-300 !border-blue-400"
               }`}
               key={city.cityName}
             >
@@ -168,14 +169,14 @@ const Application = ({ cities }) => {
       </section>
       <section className="container xl:max-w-xl mx-auto my-24">
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-y-12">
-          <div className="flex items-end justify-between gap-x-8">
-            <label htmlFor="username" className="relative">
+          <div className="flex items-end justify-between gap-x-2">
+            <label htmlFor="username" className="relative flex-1">
               <span className="block text-xl text-gray-800 font-semibold uppercase mb-1">
                 Minecraft Name
                 <strong className="ml-1 text-gray-400">*</strong>
               </span>
               <input
-                className="form-input-field form-text-input"
+                className="w-full form-input-field form-text-input"
                 type="text"
                 aria-invalid={errors.username ? true : false}
                 placeholder="Example"
@@ -197,7 +198,7 @@ const Application = ({ cities }) => {
                 {errors.username?.message}
               </p>
             </label>
-            <div className="relative w-16 h-16">
+            <div className="relative aspect-square h-full">
               {!errors.username && username.length > 3 ? (
                 <Image
                   src={`https://minotar.net/avatar/${username}/64`}
@@ -206,6 +207,7 @@ const Application = ({ cities }) => {
                   objectFit="contain"
                   blurDataURL="https://minotar.net/avatar/steve/64"
                   placeholder="blur"
+                  className="rounded"
                 ></Image>
               ) : (
                 <div className="w-full h-full bg-gray-700 rounded grid place-content-center">
@@ -359,9 +361,9 @@ const Application = ({ cities }) => {
               <span className="text-xl text-gray-800 font-semibold uppercase mb-1">
                 Previous Nations
               </span>
-              <div className="flex">
+              <div className="flex gap-x-2">
                 <input
-                  className="w-full border-2 border-gray-500 rounded placeholder:font-serif py-1.5 px-2"
+                  className="w-full form-input-field form-text-input"
                   type="text"
                   placeholder="Plagatea, Simulami..."
                   {...register("nations", { required: false })}
@@ -370,7 +372,7 @@ const Application = ({ cities }) => {
                   onClick={(e) => (
                     e.preventDefault(), addNation(getValues("nations"))
                   )}
-                  className="ml-2 border-2 border-gray-500 hover:bg-gray-200/50 duration-200 rounded px-2 py-1.5"
+                  className="border-2 border-gray-500 hover:bg-gray-200/50 duration-200 rounded px-2 py-1.5"
                 >
                   <HiPlus className="text-xl" />
                 </button>
@@ -401,9 +403,9 @@ const Application = ({ cities }) => {
                 Ideas for Profession
                 <strong className="ml-1 text-gray-400">*</strong>
               </span>
-              <div className="flex">
+              <div className="flex gap-x-2">
                 <input
-                  className="w-full border-2 border-gray-500 rounded placeholder:font-serif py-1.5 px-2"
+                  className="w-full form-input-field form-text-input"
                   type="text"
                   aria-invalid={errors.professions ? true : false}
                   placeholder="Builder, Politician..."
@@ -416,7 +418,7 @@ const Application = ({ cities }) => {
                   onClick={(e) => (
                     e.preventDefault(), addProfession(getValues("professions"))
                   )}
-                  className="ml-2 border-2 border-gray-500 hover:bg-gray-200/50 duration-200 rounded px-2 py-1.5"
+                  className="border-2 border-gray-500 hover:bg-gray-200/50 duration-200 rounded px-2 py-1.5"
                 >
                   <HiPlus className="text-xl" />
                 </button>
@@ -448,7 +450,7 @@ const Application = ({ cities }) => {
             </span>
             <div className="relative">
               <textarea
-                className="border-2 border-gray-500 rounded placeholder:font-serif w-full max-h-48"
+                className="w-full form-input-field form-text-input font-normal max-h-48 min-h-[5em]"
                 type="text"
                 aria-invalid={errors.joinreason ? true : false}
                 maxLength="200"
@@ -465,15 +467,35 @@ const Application = ({ cities }) => {
                 {joinreason.length}/200
               </span>
             </div>
-            <p className="uppercase text-gray-600 font-semibold mt-6">
+          </label>
+          <label className="relative">
+            <div>
+              <input
+                className="bg-inherit rounded focus:ring-transparent focus:ring-offset-transparent"
+                type="checkbox"
+                aria-invalid={errors.commitment ? true : false}
+                {...register("commitment", {
+                  required: "Required field",
+                })}
+              />
+              <span className="ml-2 text-gray-500 font-semibold">
+                Are you going to be commited to playing on the server?
+              </span>
+            </div>
+            <p role="alert" className="form-error-message">
+              {errors.commitment?.message}
+            </p>
+          </label>
+          <div>
+            <p className="uppercase text-gray-600 font-semibold">
               <strong className="mr-1">*</strong>
               Required Field
             </p>
-          </label>
+          </div>
           <div className="w-2/5 mx-auto">
             <input
               type="submit"
-              className={`cursor-pointer w-full btn text-gray-800 font-bold border-gray-500 ${
+              className={`cursor-pointer w-full btn rounded text-gray-800 font-bold border-gray-500 ${
                 applicationStatus.status == 200 && "!border-green-400"
               } ${applicationStatus.status == 400 && "!border-red-400"}`}
             />
