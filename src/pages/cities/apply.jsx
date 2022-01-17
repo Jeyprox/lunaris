@@ -21,7 +21,7 @@ const Application = ({ cities }) => {
     setError,
     clearErrors,
     formState: { errors },
-  } = useForm({ mode: "onChange", defaultValues: { city: cityOrigin } });
+  } = useForm({ mode: "onChange" });
   const username = useWatch({
     control,
     name: "username",

@@ -1,4 +1,4 @@
-const fetchUserByName = async (discordName) => {
+export const fetchUserByName = async (discordName) => {
   const queryName = discordName.slice(0, -5);
   const response = await fetch(
     `https://discord.com/api/guilds/${process.env.DISCORD_GUILD_ID}/members/search?query=${queryName}`,
@@ -15,4 +15,13 @@ const fetchUserByName = async (discordName) => {
   return null;
 };
 
-export default fetchUserByName;
+export const fetchMemberById = async (discordId) => {
+  const response = await fetch(
+    `https://discord.com/api/guilds/${process.env.DISCORD_GUILD_ID}/members/${discordId}`,
+    {
+      headers: { Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}` },
+    }
+  );
+  const userData = await response.json();
+  return userData;
+};

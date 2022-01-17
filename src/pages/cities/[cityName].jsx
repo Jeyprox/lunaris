@@ -14,7 +14,7 @@ import { getAllCities, getCityByName } from "../../lib/graphcms";
 import Link from "next/link";
 import { Element, animateScroll } from "react-scroll";
 import { useEffect, useRef } from "react";
-import { FXAASkinViewer, WalkingAnimation } from "skinview3d";
+import { FXAASkinViewer, IdleAnimation } from "skinview3d";
 
 const City = ({ city, moreCities }) => {
   const skinRef = useRef([]);
@@ -30,7 +30,7 @@ const City = ({ city, moreCities }) => {
           background: city.cityColour.hex,
           skin: `https://minotar.net/skin/${playerName}`,
         });
-        skinViewer.animations.add(WalkingAnimation);
+        skinViewer.animations.add(IdleAnimation);
       };
       getSkinViewer(skinRef.current[index], player.ingameName);
     });
