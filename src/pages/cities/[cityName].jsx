@@ -145,7 +145,7 @@ const City = ({ city, moreCities }) => {
           <section className="section">
             <Element name="government">
               <h1 className="section-title">Government Positions</h1>
-              <div className="grid grid-cols-2">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-6">
                 {city.governmentPositions.map((player, index) => (
                   <div className="flex mx-2" key={player.userId}>
                     <div className="overflow-hidden rounded-md">
@@ -172,9 +172,13 @@ const City = ({ city, moreCities }) => {
                         <RiGovernmentFill className="text-xl text-gray-500 mr-2" />
                         <p className="text-lg uppercase">Government</p>
                       </div>
-                      <h2 className="tag w-min col-span-2">
-                        {player.governmentPosition}
-                      </h2>
+                      <div className="flex gap-x-2 col-span-2">
+                        {player.governmentPositions.map((pos, i) => (
+                          <h2 key={i} className="tag">
+                            {pos.replaceAll("_", " ")}
+                          </h2>
+                        ))}
+                      </div>
                       {player.ministerPosition && (
                         <div className="flex items-center">
                           <HiPencil className="text-xl text-gray-500 mr-2" />
