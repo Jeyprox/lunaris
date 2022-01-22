@@ -18,6 +18,10 @@ import { FXAASkinViewer, IdleAnimation } from "skinview3d";
 const City = ({ city, moreCities }) => {
   const skinRef = useRef([]);
 
+  const replaceAll = function (str, find, replace) {
+    return str.replace(new RegExp(find, "g"), replace);
+  };
+
   useEffect(() => {
     if (!city) return;
     city.governmentPositions.forEach((player, index) => {
@@ -175,7 +179,7 @@ const City = ({ city, moreCities }) => {
                       <div className="flex gap-x-2 col-span-2">
                         {player.governmentPositions.map((pos, i) => (
                           <h2 key={i} className="tag">
-                            {pos.replaceAll("_", " ")}
+                            {pos.replace(new RegExp("_", "g"), " ")}
                           </h2>
                         ))}
                       </div>
