@@ -148,7 +148,7 @@ const City = ({ city, moreCities }) => {
             <div className="grid grid-cols-2 gap-x-4 gap-y-6">
               {city.governmentPositions.map((player, index) => (
                 <div className="flex items-center gap-x-4" key={player.userId}>
-                  <div className="overflow-hidden">
+                  <div className="flex-none overflow-hidden">
                     <canvas
                       className="rounded"
                       ref={(el) => (skinRef.current[index] = el)}
@@ -166,20 +166,9 @@ const City = ({ city, moreCities }) => {
                       <FaDiscord className="text-xl text-gray-500 mr-2" />
                       <p className="text-lg uppercase">Discord</p>
                     </div>
-                    <h2 className="tag w-min col-span-2">
+                    <h2 className="tag w-fit col-span-2">
                       {player.discordName}
                     </h2>
-                    <div className="flex items-center">
-                      <RiGovernmentFill className="text-xl text-gray-500 mr-2" />
-                      <p className="text-lg uppercase">Government</p>
-                    </div>
-                    <div className="flex gap-x-2 col-span-2">
-                      {player.governmentPositions.map((pos, i) => (
-                        <h2 key={i} className="tag">
-                          {pos.replace(new RegExp("_", "g"), " ")}
-                        </h2>
-                      ))}
-                    </div>
                     {player.ministerPosition && (
                       <div className="flex items-center">
                         <HiPencil className="text-xl text-gray-500 mr-2" />
@@ -191,6 +180,17 @@ const City = ({ city, moreCities }) => {
                         {player.ministerPosition}
                       </h2>
                     )}
+                    <div className="flex items-center">
+                      <RiGovernmentFill className="text-xl text-gray-500 mr-2" />
+                      <p className="text-lg uppercase">Government</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2 col-span-2 row-span-2">
+                      {player.governmentPositions.map((pos, i) => (
+                        <h2 key={i} className="tag">
+                          {pos.replace(new RegExp("_", "g"), " ")}
+                        </h2>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ))}
