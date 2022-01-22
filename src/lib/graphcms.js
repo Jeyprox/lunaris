@@ -46,7 +46,7 @@ export async function getCityByName(name) {
             governmentPositions {
                 ingameName,
                 discordName
-                governmentPosition,
+                governmentPositions,
                 ministerPosition
             },
             server

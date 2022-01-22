@@ -1,5 +1,4 @@
 import Image from "next/image";
-import ErrorPage from "next/error";
 import {
   HiChevronDown,
   HiLocationMarker,
