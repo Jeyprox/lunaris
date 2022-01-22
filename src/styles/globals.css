@@ -10,10 +10,10 @@
     @apply text-gray-100 font-serif text-lg uppercase px-4 py-2 border-2 hover:bg-gray-200/50 duration-200;
   }
   .section {
-    @apply container mx-auto my-24 px-8;
+    @apply container mx-auto my-24 px-8 grid gap-y-4;
   }
   .section-title {
-    @apply text-4xl font-serif uppercase mb-8;
+    @apply text-3xl font-semibold font-serif uppercase;
   }
   .tag {
     @apply text-gray-700 text-base py-1 px-1.5 font-serif uppercase border rounded;

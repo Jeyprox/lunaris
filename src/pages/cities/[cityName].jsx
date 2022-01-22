@@ -18,18 +18,14 @@ import { FXAASkinViewer, IdleAnimation } from "skinview3d";
 const City = ({ city, moreCities }) => {
   const skinRef = useRef([]);
 
-  const replaceAll = function (str, find, replace) {
-    return str.replace(new RegExp(find, "g"), replace);
-  };
-
   useEffect(() => {
     if (!city) return;
     city.governmentPositions.forEach((player, index) => {
       const getSkinViewer = (canvas, playerName) => {
         let skinViewer = new FXAASkinViewer({
           canvas,
-          width: 144,
-          height: 196,
+          width: 121,
+          height: 169,
           background: city.cityColour.hex,
           skin: `https://minotar.net/skin/${playerName}`,
         });
@@ -86,8 +82,9 @@ const City = ({ city, moreCities }) => {
               </div>
             </div>
           </section>
-          <section className="section xl:max-w-7xl mt-32">
-            <Element name="about" className="flex">
+          <section className="section xl:max-w-7xl">
+            <h1 className="section-title">Information</h1>
+            <Element name="about" className="flex gap-x-16">
               <div>
                 <iframe
                   src={`${getMapUrl(city.server)}?worldname=${
@@ -95,13 +92,13 @@ const City = ({ city, moreCities }) => {
                   }&mapname=surface&zoom=4&x=${city.cityCoordinates[0]}&z=${
                     city.cityCoordinates[1]
                   }`}
-                  width={500}
-                  height={500}
+                  width={600}
+                  height={400}
                   frameBorder="0"
                   allowFullScreen={false}
                 ></iframe>
               </div>
-              <div className="ml-16 w-full flex flex-col divide-y divide-gray-300">
+              <div className="w-full flex flex-col divide-y divide-gray-300">
                 <div className="pb-4">
                   <div className="flex items-end mb-4">
                     <h1 className="text-4xl uppercase text-gray-800 font-bold">
@@ -146,91 +143,85 @@ const City = ({ city, moreCities }) => {
               </div>
             </Element>
           </section>
-          <section className="section">
-            <Element name="government">
-              <h1 className="section-title">Government Positions</h1>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-6">
-                {city.governmentPositions.map((player, index) => (
-                  <div className="flex mx-2" key={player.userId}>
-                    <div className="overflow-hidden rounded-md">
-                      <canvas
-                        ref={(el) => (skinRef.current[index] = el)}
-                      ></canvas>
-                    </div>
-                    <div className="ml-8 grid grid-cols-3 gap-y-2 gap-x-4 place-content-center">
-                      <div className="flex items-center">
-                        <HiTag className="text-xl text-gray-500 mr-2" />
-                        <p className="text-lg uppercase">IGN</p>
-                      </div>
-                      <h1 className="text-2xl col-span-2 text-gray-900 font-semibold uppercase">
-                        {player.ingameName}
-                      </h1>
-                      <div className="flex items-center">
-                        <FaDiscord className="text-xl text-gray-500 mr-2" />
-                        <p className="text-lg uppercase">Discord</p>
-                      </div>
-                      <h2 className="tag w-min col-span-2">
-                        {player.discordName}
-                      </h2>
-                      <div className="flex items-center">
-                        <RiGovernmentFill className="text-xl text-gray-500 mr-2" />
-                        <p className="text-lg uppercase">Government</p>
-                      </div>
-                      <div className="flex gap-x-2 col-span-2">
-                        {player.governmentPositions.map((pos, i) => (
-                          <h2 key={i} className="tag">
-                            {pos.replace(new RegExp("_", "g"), " ")}
-                          </h2>
-                        ))}
-                      </div>
-                      {player.ministerPosition && (
-                        <div className="flex items-center">
-                          <HiPencil className="text-xl text-gray-500 mr-2" />
-                          <p className="text-lg uppercase">Ministry</p>
-                        </div>
-                      )}
-                      {player.ministerPosition && (
-                        <h2 className="tag w-min col-span-2">
-                          {player.ministerPosition}
-                        </h2>
-                      )}
-                    </div>
+          <Element className="section xl:max-w-7xl" name="government">
+            <h1 className="section-title">Government Positions</h1>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-6">
+              {city.governmentPositions.map((player, index) => (
+                <div className="flex items-center gap-x-4" key={player.userId}>
+                  <div className="overflow-hidden">
+                    <canvas
+                      className="rounded"
+                      ref={(el) => (skinRef.current[index] = el)}
+                    ></canvas>
                   </div>
-                ))}
-              </div>
-            </Element>
-          </section>
+                  <div className="grid grid-cols-3 gap-y-2 gap-x-4 place-content-center">
+                    <div className="flex items-center">
+                      <HiTag className="text-xl text-gray-500 mr-2" />
+                      <p className="text-lg uppercase">IGN</p>
+                    </div>
+                    <h1 className="text-2xl col-span-2 text-gray-900 font-semibold uppercase">
+                      {player.ingameName}
+                    </h1>
+                    <div className="flex items-center">
+                      <FaDiscord className="text-xl text-gray-500 mr-2" />
+                      <p className="text-lg uppercase">Discord</p>
+                    </div>
+                    <h2 className="tag w-min col-span-2">
+                      {player.discordName}
+                    </h2>
+                    <div className="flex items-center">
+                      <RiGovernmentFill className="text-xl text-gray-500 mr-2" />
+                      <p className="text-lg uppercase">Government</p>
+                    </div>
+                    <div className="flex gap-x-2 col-span-2">
+                      {player.governmentPositions.map((pos, i) => (
+                        <h2 key={i} className="tag">
+                          {pos.replace(new RegExp("_", "g"), " ")}
+                        </h2>
+                      ))}
+                    </div>
+                    {player.ministerPosition && (
+                      <div className="flex items-center">
+                        <HiPencil className="text-xl text-gray-500 mr-2" />
+                        <p className="text-lg uppercase">Ministry</p>
+                      </div>
+                    )}
+                    {player.ministerPosition && (
+                      <h2 className="tag w-min col-span-2">
+                        {player.ministerPosition}
+                      </h2>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Element>
           {moreCities.length > 0 && (
-            <section className="section ">
+            <section className="section xl:max-w-4xl">
               <h1 className="section-title">Other cities</h1>
-              <div className="grid grid-cols-3 justify-center justify-items-center">
+              <div className="grid grid-cols-3 gap-x-24 justify-center justify-items-center">
                 {moreCities.map((city) => (
                   <Link
                     key={city.cityName}
                     href={`/cities/${city.cityName}`}
                     passHref
                   >
-                    <div className="cursor-pointer p-4 rounded-md flex items-center border-2 hover:bg-gray-300/10">
-                      <div>
-                        <div className="relative w-32 h-32">
-                          <Image
-                            src={city.cityMap.url}
-                            alt={`${city.cityName} Map`}
-                            layout="fill"
-                            objectFit="contain"
-                          ></Image>
-                        </div>
+                    <div className="w-full cursor-pointer p-4 rounded-md flex flex-col gap-y-2 items-center border-2 hover:bg-gray-300/10">
+                      <div className="relative aspect-square h-24">
+                        <Image
+                          src={city.cityMap.url}
+                          alt={`${city.cityName} Map`}
+                          layout="fill"
+                          objectFit="contain"
+                        ></Image>
                       </div>
-                      <div className="ml-6">
+                      <div className="flex flex-col gap-y-1">
                         <div>
-                          <span
-                            className={`w-10 h-10 rounded-full bg-blue-300`}
-                          ></span>
-                          <h1 className="text-2xl font-serif uppercase text-gray-900">
+                          <h1 className="text-2xl text-center font-serif uppercase text-gray-900">
                             {city.cityName}
                           </h1>
                         </div>
-                        <div className="mt-2 flex flex-col items-start">
+                        <div className="flex flex-col">
                           <div className="flex items-center">
                             <HiLocationMarker className="text-gray-500" />
                             <p className="text-gray-500 text-base ml-1">
@@ -238,8 +229,7 @@ const City = ({ city, moreCities }) => {
                               {city.cityCoordinates[1]}
                             </p>
                           </div>
-
-                          <div className="flex items-center mt-1">
+                          <div className="flex items-center">
                             <HiMap className="text-gray-500" />
                             <p className="text-gray-500 ml-1">{city.server}</p>
                           </div>
