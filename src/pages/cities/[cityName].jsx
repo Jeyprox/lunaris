@@ -12,11 +12,12 @@ import MainNav from "../../components/MainNav";
 import { getAllCities, getCityByName } from "../../lib/graphcms";
 import Link from "next/link";
 import { Element, animateScroll } from "react-scroll";
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FXAASkinViewer, IdleAnimation } from "skinview3d";
 
 const City = ({ city, moreCities }) => {
   const skinRef = useRef([]);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
     if (!city) return;
@@ -86,7 +87,18 @@ const City = ({ city, moreCities }) => {
             <h1 className="section-title">Information</h1>
             <Element name="about" className="flex gap-x-16">
               <div>
+                {!mapLoaded && (
+                  <div className="relative w-[600px] h-[400px]">
+                    <Image
+                      src="/img/city-images/lunaris/NoxMap.png"
+                      alt="Map"
+                      layout="fill"
+                      objectFit="cover"
+                    ></Image>
+                  </div>
+                )}
                 <iframe
+                  className={!mapLoaded && "hidden"}
                   src={`${getMapUrl(city.server)}?worldname=${
                     city.server
                   }&mapname=surface&zoom=4&x=${city.cityCoordinates[0]}&z=${
@@ -96,6 +108,7 @@ const City = ({ city, moreCities }) => {
                   height={400}
                   frameBorder="0"
                   allowFullScreen={false}
+                  onLoad={() => setMapLoaded(true)}
                 ></iframe>
               </div>
               <div className="w-full flex flex-col divide-y divide-gray-300">
