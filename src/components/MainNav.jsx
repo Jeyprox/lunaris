@@ -1,4 +1,4 @@
-import { Menu } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { HiMenuAlt3 } from "react-icons/hi";
 
@@ -55,21 +55,30 @@ const MainNav = ({ cities, cityName, cityColour }) => {
             <Menu.Button>
               <HiMenuAlt3 className="text-3xl text-gray-800" />
             </Menu.Button>
-            <Menu.Items className="z-10 absolute w-2/3 left-1/2 -translate-x-1/2 top-full bg-gray-200 px-8 py-4 rounded-b-md flex justify-around">
-              {cities.map((cityItem) => (
-                <Menu.Item key={cityItem.id}>
-                  <Link
-                    href={`/cities/${cityItem.cityName
-                      .toLowerCase()
-                      .replace(/\ /g, "-")}`}
-                  >
-                    <a className="text-xl text-gray-700 uppercase font-semibold hover:text-gray-500 duration-200">
-                      {cityItem.cityName}
-                    </a>
-                  </Link>
-                </Menu.Item>
-              ))}
-            </Menu.Items>
+            <Transition
+              enter="duration-100"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Menu.Items className="z-10 absolute w-2/3 left-1/2 -translate-x-1/2 top-full bg-gray-200 px-8 py-4 rounded-b-md flex justify-around">
+                {cities.map((cityItem) => (
+                  <Menu.Item key={cityItem.id}>
+                    <Link
+                      href={`/cities/${cityItem.cityName
+                        .toLowerCase()
+                        .replace(/\ /g, "-")}`}
+                    >
+                      <a className="text-xl text-gray-700 uppercase font-semibold hover:text-gray-500 duration-200">
+                        {cityItem.cityName}
+                      </a>
+                    </Link>
+                  </Menu.Item>
+                ))}
+              </Menu.Items>
+            </Transition>
           </Menu>
         )}
       </div>
