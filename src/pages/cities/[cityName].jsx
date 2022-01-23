@@ -15,7 +15,7 @@ import { Element, animateScroll } from "react-scroll";
 import { useEffect, useState, useRef } from "react";
 import { FXAASkinViewer, IdleAnimation } from "skinview3d";
 
-const City = ({ city, moreCities }) => {
+const City = ({ city, moreCities, cities }) => {
   const skinRef = useRef([]);
   const [mapLoaded, setMapLoaded] = useState(false);
 
@@ -51,10 +51,13 @@ const City = ({ city, moreCities }) => {
         <div>
           <section className="w-screen h-[100vh]">
             <header>
-              <MainNav
-                cityName={city.cityName.toLowerCase()}
-                cityColour={city.cityColour.hex}
-              />
+              {cities && (
+                <MainNav
+                  cityName={city.cityName.toLowerCase()}
+                  cityColour={city.cityColour.hex}
+                  cities={cities}
+                />
+              )}
             </header>
             <div className="relative h-4/5">
               <div className="-z-10 overflow-hidden absolute w-full h-full">
@@ -98,7 +101,7 @@ const City = ({ city, moreCities }) => {
                   </div>
                 )}
                 <iframe
-                  className={!mapLoaded && "hidden"}
+                  className={!mapLoaded ? "hidden" : ""}
                   src={`${getMapUrl(city.server)}?worldname=${
                     city.server
                   }&mapname=surface&zoom=4&x=${city.cityCoordinates[0]}&z=${
@@ -280,10 +283,13 @@ export const getStaticProps = async ({ params }) => {
     player.userId = userId.data.player.id;
   }
 
+  const cities = await getAllCities();
+
   return {
     props: {
       city: data.city,
       moreCities: data.moreCities,
+      cities,
     },
   };
 };

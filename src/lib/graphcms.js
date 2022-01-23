@@ -75,7 +75,7 @@ export async function getCityByName(name) {
 export async function getAllCities() {
   const data = await fetchAPI(`
       {
-        cities {
+        cities(orderBy: cityRelevance_DESC) {
           id,
           cityName
         }
