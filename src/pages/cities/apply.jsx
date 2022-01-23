@@ -6,8 +6,6 @@ import { HiPlus, HiX } from "react-icons/hi";
 import { getAllCityPreviews } from "../../lib/graphcms";
 
 const Application = ({ cities }) => {
-  const router = useRouter();
-  const { cityOrigin } = router.query;
   const [nations, setNations] = useState([]);
   const [professions, setProfessions] = useState([]);
   const [joinStatus, setJoinStatus] = useState(0);
@@ -35,7 +33,7 @@ const Application = ({ cities }) => {
   const selectedCity = useWatch({
     control,
     name: "city",
-    defaultValue: cityOrigin,
+    defaultValue: "",
   });
 
   const addNation = (nation) => {
@@ -468,10 +466,10 @@ const Application = ({ cities }) => {
               </span>
             </div>
           </label>
-          <label className="relative">
+          <label className="relative cursor-pointer">
             <div>
               <input
-                className="bg-inherit rounded focus:ring-transparent focus:ring-offset-transparent"
+                className="cursor-pointer bg-inherit rounded focus:ring-transparent focus:ring-offset-transparent"
                 type="checkbox"
                 aria-invalid={errors.commitment ? true : false}
                 {...register("commitment", {
