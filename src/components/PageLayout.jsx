@@ -5,8 +5,13 @@ const PageLayout = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Kingdom Of Lunaris</title>
-        <meta name="description" content="Lunaris homepage" />
+        <meta charset="UTF-8" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <title>Lunari Empire</title>
+        <meta
+          name="description"
+          content="Discover all the great cities of the Lunari Empire or apply for your Lunarian citizenship and become a glorious member of Lunaris!"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="overflow-x-hidden">{children}</main>
