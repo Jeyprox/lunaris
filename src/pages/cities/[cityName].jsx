@@ -114,9 +114,9 @@ const City = ({ city, moreCities, cities }) => {
                   onLoad={() => setMapLoaded(true)}
                 ></iframe>
               </div>
-              <div className="w-full flex flex-col divide-y divide-gray-300">
-                <div className="pb-4">
-                  <div className="flex items-end mb-4">
+              <div className="w-full flex flex-col gap-y-4">
+                <div className="grid gap-y-4">
+                  <div className="flex items-end">
                     <h1 className="text-4xl uppercase text-gray-800 font-bold">
                       {city.cityName}
                     </h1>
@@ -128,32 +128,38 @@ const City = ({ city, moreCities, cities }) => {
                     {city.cityDescription}
                   </p>
                 </div>
-                <div className="grid grid-cols-4 w-4/5 items-end pt-4 gap-x-2">
-                  <div className="flex flex-col items-center justify-center">
+                <div className="flex items-center py-4 w-fit gap-x-8 border-y border-gray-300">
+                  <div className="flex gap-x-2 items-center">
+                    <HiTag className="text-gray-600" />
+                    <h1 className="text-xl text-gray-800 uppercase">Tags</h1>
+                  </div>
+                  <div className="flex gap-x-2 items-center">
+                    {city.cityStatus.map((status) => (
+                      <p className="tag" key={status}>
+                        {status}
+                      </p>
+                    ))}
+                  </div>
+                  <p className="flex gap-x-4 items-center font-semibold text-gray-500 uppercase"></p>
+                </div>
+                <div className="grid grid-cols-3 w-fit items-end gap-x-8 text-center">
+                  <div className="grid place-content-center gap-y-2">
                     <h1 className="text-5xl font-semibold text-gray-500">
                       {city.citizenCount}
                     </h1>
-                    <p className="mt-2 uppercase font-serif">Citizens</p>
+                    <p className="uppercase font-serif">Citizens</p>
                   </div>
-                  <div className="flex flex-col items-center justify-center">
-                    <h1 className="flex flex-col items-center font-semibold text-gray-500 uppercase">
-                      {city.cityStatus.map((status) => (
-                        <span key={status}>{status}</span>
-                      ))}
-                    </h1>
-                    <p className="mt-2 uppercase font-serif">Tags</p>
-                  </div>
-                  <div className="flex flex-col items-center justify-center">
+                  <div className="grid place-content-center gap-y-2">
                     <h1 className="text-4xl font-semibold text-gray-500">
                       {city.cityCoordinates[0]}
                     </h1>
-                    <p className="mt-2 uppercase font-serif">X-COORD</p>
+                    <p className="uppercase font-serif">X-COORD</p>
                   </div>
-                  <div className="flex flex-col items-center justify-center">
+                  <div className="grid place-content-center gap-y-2">
                     <h1 className="text-4xl font-semibold text-gray-500">
                       {city.cityCoordinates[1]}
                     </h1>
-                    <p className="mt-2 uppercase font-serif">Y-COORDS</p>
+                    <p className="uppercase font-serif">Y-COORDS</p>
                   </div>
                 </div>
               </div>
