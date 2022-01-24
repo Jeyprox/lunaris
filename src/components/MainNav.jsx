@@ -12,15 +12,15 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
   return (
     <nav className="relative container mx-auto py-6">
       <div className="flex items-center">
-        <ul className="w-full flex justify-center items-center text-xl font-serif uppercase">
+        <ul className="select-none w-full flex justify-center items-center text-xl font-serif uppercase">
           <li
             onClick={openApplication}
             className="cursor-pointer px-8 py-1 hover:text-gray-500 duration-200"
           >
             Apply
           </li>
-          <li className="px-8 py-1 hover:text-gray-500 duration-200">
-            <Link href={`/shop/${cityName}`}>Merchants</Link>
+          <li className="cursor-not-allowed px-8 py-1 hover:text-gray-500 duration-200">
+            Merchants
           </li>
           <li
             className={`font-sans text-3xl font-bold px-32 select-none text-[${cityColour}]`}
