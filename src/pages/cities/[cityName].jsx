@@ -17,7 +17,7 @@ import { FXAASkinViewer, IdleAnimation } from "skinview3d";
 
 const City = ({ city, moreCities, cities }) => {
   const skinRef = useRef([]);
-  const [mapLoaded, setMapLoaded] = useState(false);
+  // const [mapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
     if (!city) return;
@@ -36,14 +36,14 @@ const City = ({ city, moreCities, cities }) => {
     });
   }, [city]);
 
-  const getMapUrl = (server) => {
-    switch (server) {
-      case "Rathnir":
-        return "http://199.127.63.89:2096/";
-      case "Eldham":
-        return "http://104.238.222.67:2096/";
-    }
-  };
+  // const getMapUrl = (server) => {
+  //   switch (server) {
+  //     case "Rathnir":
+  //       return "http://199.127.63.89:2096/";
+  //     case "Eldham":
+  //       return "http://104.238.222.67:2096/";
+  //   }
+  // };
 
   return (
     <>
@@ -62,10 +62,12 @@ const City = ({ city, moreCities, cities }) => {
             <div className="relative h-4/5">
               <div className="-z-10 overflow-hidden absolute w-full h-full">
                 <Image
-                  src={city.landingImage.url}
-                  alt="City Landing"
+                  src={`${city.landingImage.url}`}
+                  alt={city.landingImage.altText}
                   layout="fill"
                   className="object-cover blur-xs brightness-75 scale-105"
+                  priority
+                  quality={60}
                 ></Image>
               </div>
               <div className="h-full flex flex-col items-center justify-center">
@@ -90,17 +92,18 @@ const City = ({ city, moreCities, cities }) => {
             <h1 className="section-title">Information</h1>
             <Element name="about" className="flex gap-x-16">
               <div>
-                {!mapLoaded && (
-                  <div className="relative w-[600px] h-[400px]">
-                    <Image
-                      src={`/img/city-images/${city.cityName.toLowerCase()}_map.png`}
-                      alt="Map"
-                      layout="fill"
-                      objectFit="cover"
-                    ></Image>
-                  </div>
-                )}
-                <iframe
+                {/* {!mapLoaded && ( */}
+                <div className="relative w-[600px] h-[400px]">
+                  <Image
+                    src={`/img/city-images/${city.cityName.toLowerCase()}_map.png`}
+                    alt="Map"
+                    layout="fill"
+                    objectFit="cover"
+                    quality={75}
+                  ></Image>
+                </div>
+                {/* )} */}
+                {/* <iframe
                   className={!mapLoaded ? "hidden" : ""}
                   src={`${getMapUrl(city.server)}?worldname=${
                     city.server
@@ -112,7 +115,7 @@ const City = ({ city, moreCities, cities }) => {
                   frameBorder="0"
                   allowFullScreen={false}
                   onLoad={() => setMapLoaded(true)}
-                ></iframe>
+                ></iframe> */}
               </div>
               <div className="w-full flex flex-col gap-y-4">
                 <div className="grid gap-y-4">

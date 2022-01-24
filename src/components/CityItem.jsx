@@ -5,21 +5,24 @@ const CityItem = ({ name, mapUrl, isSelected }) => {
     <div
       className={`group hover:bg-gray-100/10 ${
         isSelected && "bg-gray-100/10"
-      } py-4 duration-200 rounded-md cursor-pointer flex flex-col items-center`}
+      } py-6 px-2 duration-200 rounded-lg cursor-pointer grid items-center text-center`}
     >
-      <div className="pb-4 px-8 border-b">
-        <div className="group-hover:scale-110 duration-200 select-none">
+      <div className="pb-4 px-8">
+        <div
+          className={`relative group-hover:scale-110 ${
+            isSelected && "scale-110"
+          } duration-200 select-none aspect-square w-20`}
+        >
           <Image
             src={mapUrl}
             alt={`${name}-Map`}
-            width="80"
-            height="80"
+            layout="fill"
+            quality={75}
           ></Image>
         </div>
       </div>
 
-      <span className="w-4 h-4 -translate-y-2 bg-gray-200 rotate-45 duration-200"></span>
-      <p className="text-gray-300 text-lg font-serif">{name}</p>
+      <h1 className="text-gray-200 text-xl uppercase font-serif">{name}</h1>
     </div>
   );
 };

@@ -32,7 +32,8 @@ export async function getCityByName(name) {
             landingSubtitle,
             landingImage {
                 id,
-                url
+                url(transformation: {document: {output: {format: webp}}}),
+                altText
             },
             cityDescription,
             cityMap {

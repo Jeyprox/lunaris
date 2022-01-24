@@ -5,7 +5,7 @@ const PageLayout = ({ children }) => {
   return (
     <>
       <Head>
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <title>Lunari Empire</title>
         <meta
