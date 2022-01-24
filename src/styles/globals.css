@@ -35,4 +35,13 @@
   .form-text-input {
     @apply placeholder:font-serif placeholder:font-normal font-semibold py-1.5;
   }
+  .scroll-wheel::-webkit-scrollbar {
+    @apply w-2 mr-2;
+  }
+  .scroll-wheel::-webkit-scrollbar-track {
+    @apply bg-gray-300 rounded;
+  }
+  .scroll-wheel::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 rounded;
+  }
 }

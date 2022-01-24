@@ -9,15 +9,21 @@ import {
 import { FaDiscord } from "react-icons/fa";
 import { RiGovernmentFill } from "react-icons/ri";
 import MainNav from "../../components/MainNav";
-import { getAllCities, getCityByName } from "../../lib/graphcms";
+import {
+  getAllCities,
+  getAllCityPreviews,
+  getCityByName,
+} from "../../lib/graphcms";
 import Link from "next/link";
 import { Element, animateScroll } from "react-scroll";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FXAASkinViewer, IdleAnimation } from "skinview3d";
+import Application from "../../components/Application";
 
 const City = ({ city, moreCities, cities }) => {
   const skinRef = useRef([]);
   // const [mapLoaded, setMapLoaded] = useState(false);
+  const [applicationOpen, setApplicationOpen] = useState(false);
 
   useEffect(() => {
     if (!city) return;
@@ -56,6 +62,7 @@ const City = ({ city, moreCities, cities }) => {
                   cityName={city.cityName.toLowerCase()}
                   cityColour={city.cityColour.hex}
                   cities={cities}
+                  openApplication={() => setApplicationOpen(true)}
                 />
               )}
             </header>
@@ -265,6 +272,21 @@ const City = ({ city, moreCities, cities }) => {
               </div>
             </section>
           )}
+          {applicationOpen && (
+            <div>
+              <div className="z-20 scroll-wheel overscroll-contain absolute bg-gray-200 h-4/5 overflow-y-scroll inset-1/2 -translate-x-1/2 -translate-y-1/2 w-2/5 px-8 rounded-md">
+                <Application
+                  closeApplication={() => setApplicationOpen(!applicationOpen)}
+                  cities={cities}
+                  currentCity={city.cityName}
+                />
+              </div>
+              <span
+                onClick={() => setApplicationOpen(false)}
+                className="absolute z-10 inset-0 bg-gray-900/40"
+              ></span>
+            </div>
+          )}
         </div>
       )}
     </>
@@ -291,7 +313,7 @@ export const getStaticProps = async ({ params }) => {
     player.userId = userId.data.player.id;
   }
 
-  const cities = await getAllCities();
+  const cities = await getAllCityPreviews();
 
   return {
     props: {
@@ -303,7 +325,7 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const cities = await getAllCities();
+  let cities = await getAllCities();
   return {
     paths: cities.map(({ cityName }) => ({
       params: { cityName },

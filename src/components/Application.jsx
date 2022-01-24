@@ -1,11 +1,10 @@
+import { Listbox, Transition } from "@headlessui/react";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { HiPlus, HiX } from "react-icons/hi";
-import { getAllCityPreviews } from "../../lib/graphcms";
+import { HiChevronDown, HiPlus, HiX } from "react-icons/hi";
 
-const Application = ({ cities }) => {
+const Application = ({ cities, currentCity, closeApplication }) => {
   const [nations, setNations] = useState([]);
   const [professions, setProfessions] = useState([]);
   const [joinStatus, setJoinStatus] = useState(0);
@@ -15,11 +14,16 @@ const Application = ({ cities }) => {
     handleSubmit,
     control,
     getValues,
+    setValue,
     resetField,
     setError,
     clearErrors,
     formState: { errors },
-  } = useForm({ mode: "onChange" });
+  } = useForm({
+    mode: "onChange",
+    defaultValues: { city: currentCity },
+  });
+  register("city", { required: "Required field" });
   const username = useWatch({
     control,
     name: "username",
@@ -33,7 +37,6 @@ const Application = ({ cities }) => {
   const selectedCity = useWatch({
     control,
     name: "city",
-    defaultValue: "",
   });
 
   const addNation = (nation) => {
@@ -137,39 +140,73 @@ const Application = ({ cities }) => {
 
   return (
     <>
-      <section className="mt-24 container xl:max-w-4xl mx-auto">
-        <h1 className="text-3xl w-full text-center mb-6 uppercase font-bold text-gray-900">
-          Select a city
-        </h1>
-        <div className="relative flex justify-around items-center">
-          {cities.map((city) => (
-            <label
-              className={`cursor-pointer border-2 border-gray-500 rounded px-3 py-1 hover:bg-gray-200/50 ${
-                city.cityName === selectedCity &&
-                "!bg-blue-300 !border-blue-400"
-              }`}
-              key={city.cityName}
-            >
-              <input
-                className="hidden"
-                type="radio"
-                name={city.cityName}
-                value={city.cityName}
-                {...register("city", { required: "Required field" })}
-              />
-              <span className="text-xl font-serif uppercase text-gray-800">
-                {city.cityName}
-              </span>
-            </label>
-          ))}
-          <p className="form-error-message mt-2">{errors.city?.message}</p>
+      <section className="relative container xl:max-w-xl mx-auto my-16 grid gap-8">
+        <span
+          onClick={closeApplication}
+          className="cursor-pointer absolute right-0 border-2 border-gray-600 rounded-full hover:bg-gray-300/50 duration-100"
+        >
+          <HiX className="text-gray-600 text-2xl m-1" />
+        </span>
+        <div className="grid gap-1">
+          <h1 className="text-3xl uppercase font-bold text-gray-800">
+            Lunari Empire
+          </h1>
+          <h2 className="text-lg font-serif text-gray-600">
+            Application for Citizenship
+          </h2>
         </div>
-      </section>
-      <section className="container xl:max-w-xl mx-auto my-24">
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-y-12">
+          <div className="grid gap-y-1">
+            <span className="text-xl uppercase text-gray-800 font-semibold">
+              Select a city
+              <strong className="ml-1 text-gray-400">*</strong>
+            </span>
+            <Listbox
+              as="div"
+              className="relative w-full"
+              value={selectedCity}
+              onChange={(newValue) => setValue("city", newValue)}
+            >
+              <Listbox.Button className="w-full flex items-center justify-between border-2 border-gray-500 px-2 py-1.5 rounded">
+                <p className="font-serif">{selectedCity}</p>
+                <HiChevronDown className="text-xl text-gray-800" />
+              </Listbox.Button>
+              <Transition
+                enter="duration-500"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <Listbox.Options className="w-full absolute z-10 top-full mt-1 bg-gray-100 rounded overflow-hidden shadow-md">
+                  {cities.map((city) => (
+                    <Listbox.Option
+                      className={`cursor-pointer`}
+                      value={city.cityName}
+                      key={city.cityName}
+                    >
+                      {({ selected }) => (
+                        <p
+                          className={`px-3 py-1.5 ${
+                            selected && "!bg-blue-300"
+                          } hover:bg-gray-200/50 duration-100 font-serif text-gray-800`}
+                        >
+                          {city.cityName}
+                        </p>
+                      )}
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+              </Transition>
+            </Listbox>
+            <p role="alert" className="form-error-message">
+              {errors.city?.message}
+            </p>
+          </div>
           <div className="flex items-end justify-between gap-x-2">
-            <label htmlFor="username" className="relative flex-1">
-              <span className="block text-xl text-gray-800 font-semibold uppercase mb-1">
+            <label htmlFor="username" className="relative flex-1 grid gap-y-1">
+              <span className="block text-xl text-gray-800 font-semibold uppercase">
                 Minecraft Name
                 <strong className="ml-1 text-gray-400">*</strong>
               </span>
@@ -492,10 +529,16 @@ const Application = ({ cities }) => {
               Required Field
             </p>
           </div>
-          <div className="w-2/5 mx-auto">
+          <div className="flex items-center gap-4 w-4/5 mx-auto">
+            <button
+              onClick={closeApplication}
+              className="btn text-gray-800 border-red-400 hover:bg-red-600/10 rounded"
+            >
+              Close
+            </button>
             <input
               type="submit"
-              className={`cursor-pointer w-full btn rounded text-gray-800 font-bold border-gray-500 ${
+              className={`cursor-pointer w-full btn hover:bg-blue-300/50 rounded text-gray-800 font-bold border-blue-400 ${
                 applicationStatus.status == 200 && "!border-green-400"
               } ${applicationStatus.status == 400 && "!border-red-400"}`}
             />
@@ -512,12 +555,3 @@ const Application = ({ cities }) => {
 };
 
 export default Application;
-
-export const getStaticProps = async () => {
-  const data = await getAllCityPreviews();
-  return {
-    props: {
-      cities: data,
-    },
-  };
-};

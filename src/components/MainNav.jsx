@@ -4,7 +4,7 @@ import { HiMenuAlt3 } from "react-icons/hi";
 
 import { Link as ScrollLink } from "react-scroll";
 
-const MainNav = ({ cities, cityName, cityColour }) => {
+const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
   const convertName = (cityName) => {
     return cityName.toLowerCase().replace(/\ /g, "-");
   };
@@ -13,8 +13,11 @@ const MainNav = ({ cities, cityName, cityColour }) => {
     <nav className="relative container mx-auto py-6">
       <div className="flex items-center">
         <ul className="w-full flex justify-center items-center text-xl font-serif uppercase">
-          <li className="px-8 py-1 hover:text-gray-500 duration-200">
-            <Link href="/cities/apply">Join Us</Link>
+          <li
+            onClick={openApplication}
+            className="cursor-pointer px-8 py-1 hover:text-gray-500 duration-200"
+          >
+            Apply
           </li>
           <li className="px-8 py-1 hover:text-gray-500 duration-200">
             <Link href={`/shop/${cityName}`}>Merchants</Link>
