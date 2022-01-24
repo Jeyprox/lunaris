@@ -19,6 +19,7 @@ import { Element, animateScroll } from "react-scroll";
 import { useEffect, useRef, useState } from "react";
 import { FXAASkinViewer, IdleAnimation } from "skinview3d";
 import Application from "../../components/Application";
+import { RemoveScroll } from "react-remove-scroll";
 
 const City = ({ city, moreCities, cities }) => {
   const skinRef = useRef([]);
@@ -274,13 +275,17 @@ const City = ({ city, moreCities, cities }) => {
           )}
           {applicationOpen && (
             <div>
-              <div className="z-20 scroll-wheel overscroll-contain absolute bg-gray-200 h-4/5 overflow-y-scroll inset-1/2 -translate-x-1/2 -translate-y-1/2 w-2/5 px-8 rounded-md">
-                <Application
-                  closeApplication={() => setApplicationOpen(!applicationOpen)}
-                  cities={cities}
-                  currentCity={city.cityName}
-                />
-              </div>
+              <RemoveScroll forwardProps>
+                <div className="z-20 scroll-wheel overscroll-contain absolute bg-gray-200 h-[90vh] overflow-y-scroll top-12 inset-x-1/2 -translate-x-1/2 w-2/5 px-8 rounded-md">
+                  <Application
+                    closeApplication={() =>
+                      setApplicationOpen(!applicationOpen)
+                    }
+                    cities={cities}
+                    currentCity={city.cityName}
+                  />
+                </div>
+              </RemoveScroll>
               <span
                 onClick={() => setApplicationOpen(false)}
                 className="absolute z-10 inset-0 bg-gray-900/40"
