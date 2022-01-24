@@ -114,6 +114,7 @@ export default function Home({ cities }) {
               transition={{ duration: 0.4 }}
               onClick={() => setLanding(true)}
               className="border-gray-300 border-2 rounded-full p-1 hover:bg-gray-100/20 duration-200"
+              aria-label="Go Back"
             >
               <HiArrowSmLeft className="text-gray-300 text-2xl" />
             </motion.button>

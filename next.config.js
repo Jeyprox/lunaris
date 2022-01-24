@@ -3,4 +3,8 @@ module.exports = {
   images: {
     domains: ["media.graphcms.com", "minotar.net"],
   },
+  i18n: {
+    locales: ["en"],
+    defaultLocale: "en",
+  },
 };

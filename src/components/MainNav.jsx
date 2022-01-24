@@ -49,7 +49,7 @@ const MainNav = ({ cities, cityName, cityColour }) => {
         </ul>
         {cities && (
           <Menu>
-            <Menu.Button>
+            <Menu.Button aria-label="city select button">
               <HiMenuAlt3 className="text-3xl text-gray-800" />
             </Menu.Button>
             <Transition

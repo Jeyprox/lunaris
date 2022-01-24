@@ -371,6 +371,7 @@ const Application = ({ cities }) => {
                     e.preventDefault(), addNation(getValues("nations"))
                   )}
                   className="border-2 border-gray-500 hover:bg-gray-200/50 duration-200 rounded px-2 py-1.5"
+                  aria-label="Add Nation"
                 >
                   <HiPlus className="text-xl" />
                 </button>
@@ -417,6 +418,7 @@ const Application = ({ cities }) => {
                     e.preventDefault(), addProfession(getValues("professions"))
                   )}
                   className="border-2 border-gray-500 hover:bg-gray-200/50 duration-200 rounded px-2 py-1.5"
+                  aria-label="Add Profession"
                 >
                   <HiPlus className="text-xl" />
                 </button>

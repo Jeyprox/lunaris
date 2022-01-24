@@ -123,7 +123,7 @@ const City = ({ city, moreCities, cities }) => {
                     <h1 className="text-4xl uppercase text-gray-800 font-bold">
                       {city.cityName}
                     </h1>
-                    <p className="ml-4 text-gray-500 text-lg font-serif uppercase">
+                    <p className="ml-4 text-gray-600 text-lg font-serif uppercase">
                       {city.server}
                     </p>
                   </div>
@@ -143,23 +143,22 @@ const City = ({ city, moreCities, cities }) => {
                       </p>
                     ))}
                   </div>
-                  <p className="flex gap-x-4 items-center font-semibold text-gray-500 uppercase"></p>
                 </div>
                 <div className="grid grid-cols-3 w-fit items-end gap-x-8 text-center">
                   <div className="grid place-content-center gap-y-2">
-                    <h1 className="text-5xl font-semibold text-gray-500">
+                    <h1 className="text-5xl font-semibold text-gray-600">
                       {city.citizenCount}
                     </h1>
                     <p className="uppercase font-serif">Citizens</p>
                   </div>
                   <div className="grid place-content-center gap-y-2">
-                    <h1 className="text-4xl font-semibold text-gray-500">
+                    <h1 className="text-4xl font-semibold text-gray-600">
                       {city.cityCoordinates[0]}
                     </h1>
                     <p className="uppercase font-serif">X-COORD</p>
                   </div>
                   <div className="grid place-content-center gap-y-2">
-                    <h1 className="text-4xl font-semibold text-gray-500">
+                    <h1 className="text-4xl font-semibold text-gray-600">
                       {city.cityCoordinates[1]}
                     </h1>
                     <p className="uppercase font-serif">Y-COORDS</p>
@@ -249,14 +248,14 @@ const City = ({ city, moreCities, cities }) => {
                         <div className="flex flex-col">
                           <div className="flex items-center">
                             <HiLocationMarker className="text-gray-500" />
-                            <p className="text-gray-500 text-base ml-1">
+                            <p className="text-gray-600 text-base ml-1">
                               X: {city.cityCoordinates[0]} | Y:
                               {city.cityCoordinates[1]}
                             </p>
                           </div>
                           <div className="flex items-center">
                             <HiMap className="text-gray-500" />
-                            <p className="text-gray-500 ml-1">{city.server}</p>
+                            <p className="text-gray-600 ml-1">{city.server}</p>
                           </div>
                         </div>
                       </div>
