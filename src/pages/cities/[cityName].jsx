@@ -93,7 +93,7 @@ const City = ({ city, moreCities, cities }) => {
                 {!mapLoaded && (
                   <div className="relative w-[600px] h-[400px]">
                     <Image
-                      src="/img/city-images/lunaris/NoxMap.png"
+                      src={`/img/city-images/${city.cityName.toLowerCase()}_map.png`}
                       alt="Map"
                       layout="fill"
                       objectFit="cover"
