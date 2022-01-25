@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from "react";
 import { FXAASkinViewer, IdleAnimation } from "skinview3d";
 import Application from "../../components/Application";
 import { RemoveScroll } from "react-remove-scroll";
+import { AnimatePresence, motion } from "framer-motion";
 
 const City = ({ city, moreCities, cities }) => {
   const skinRef = useRef([]);
@@ -273,25 +274,32 @@ const City = ({ city, moreCities, cities }) => {
               </div>
             </section>
           )}
-          {applicationOpen && (
-            <div>
-              <RemoveScroll forwardProps>
-                <div className="z-20 scroll-wheel overscroll-contain absolute bg-gray-200 h-[90vh] overflow-y-scroll top-12 inset-x-1/2 -translate-x-1/2 w-2/5 px-8 rounded-md">
-                  <Application
-                    closeApplication={() =>
-                      setApplicationOpen(!applicationOpen)
-                    }
-                    cities={cities}
-                    currentCity={city.cityName}
-                  />
-                </div>
-              </RemoveScroll>
-              <span
-                onClick={() => setApplicationOpen(false)}
-                className="absolute z-10 inset-0 bg-gray-900/40"
-              ></span>
-            </div>
-          )}
+          <AnimatePresence>
+            {applicationOpen && (
+              <motion.div
+                animate={{ opacity: 1 }}
+                initial={{ opacity: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <RemoveScroll forwardProps>
+                  <div className="z-20 scroll-wheel overscroll-contain absolute bg-gray-200 h-[90vh] overflow-y-scroll top-12 inset-x-1/2 -translate-x-1/2 w-2/5 px-8 rounded-md">
+                    <Application
+                      closeApplication={() =>
+                        setApplicationOpen(!applicationOpen)
+                      }
+                      cities={cities}
+                      currentCity={city.cityName}
+                    />
+                  </div>
+                </RemoveScroll>
+                <span
+                  onClick={() => setApplicationOpen(false)}
+                  className="absolute z-10 inset-0 bg-gray-900/40"
+                ></span>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       )}
     </>

@@ -168,7 +168,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
               onChange={(newValue) => setValue("city", newValue)}
             >
               <Listbox.Button className="w-full flex items-center justify-between border-2 border-gray-500 px-2 py-1.5 rounded">
-                <p className="font-serif">{selectedCity}</p>
+                <p className="font-serif text-gray-800">{selectedCity}</p>
                 <HiChevronDown className="text-xl text-gray-800" />
               </Listbox.Button>
               <Transition
@@ -245,8 +245,8 @@ const Application = ({ cities, currentCity, closeApplication }) => {
                   className="rounded"
                 ></Image>
               ) : (
-                <div className="w-full h-full bg-gray-700 rounded grid place-content-center">
-                  <span className="text-gray-100 font-bold text-4xl">?</span>
+                <div className="w-full h-full bg-blue-300/50 border-2 border-blue-400 rounded grid place-content-center">
+                  <span className="text-gray-800 font-bold text-4xl">?</span>
                 </div>
               )}
             </div>
@@ -284,7 +284,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
             </label>
             <button
               onClick={(e) => verifyUser(e)}
-              className={`px-2 py-1.5 font-semibold uppercase font-serif border-2 hover:bg-gray-200/50 border-gray-500 rounded ${
+              className={`px-2 py-1.5 font-semibold text-gray-800 uppercase font-serif border-2 hover:bg-blue-300/50 border-blue-400 rounded duration-100 ${
                 joinStatus == 3 && "border-green-400"
               } ${joinStatus == 2 && "border-orange-400"} ${
                 joinStatus == 1 && "border-red-400"
