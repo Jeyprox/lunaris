@@ -57,7 +57,7 @@ const City = ({ city, moreCities, cities }) => {
     <>
       {city && (
         <div>
-          <section className="w-screen h-[100vh]">
+          <section className="h-screen">
             <header>
               {cities && (
                 <MainNav
@@ -86,10 +86,10 @@ const City = ({ city, moreCities, cities }) => {
                 </h2>
               </div>
             </div>
-            <div className="cursor-pointer flex w-full justify-center items-center p-2 mt-4">
+            <div className="cursor-pointer grid place-content-center mt-4">
               <div
                 onClick={() => animateScroll.scrollTo(750)}
-                className={`p-1.5 border-2 border-gray-700 hover:bg-gray-900/10 duration-200 rounded-full`}
+                className={`p-1.5 border-2 border-gray-700 hover:bg-gray-900/10 duration-100 rounded-full`}
               >
                 <HiChevronDown className="text-2xl text-gray-700" />
               </div>
