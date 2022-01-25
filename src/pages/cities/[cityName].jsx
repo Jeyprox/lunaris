@@ -68,19 +68,17 @@ const City = ({ city, moreCities, cities }) => {
                 />
               )}
             </header>
-            <div className="relative h-4/5">
-              <div className="-z-10 overflow-hidden absolute w-full h-full">
-                <Image
-                  src={`${city.landingImage.url}`}
-                  alt={city.landingImage.altText}
-                  layout="fill"
-                  className="object-cover blur-xs brightness-75 scale-105"
-                  priority
-                  quality={60}
-                ></Image>
-              </div>
-              <div className="h-full flex flex-col items-center justify-center">
-                <h1 className="text-gray-100 text-8xl font-bold uppercase mb-8">
+            <div className="relative h-4/5 grid place-content-center">
+              <Image
+                src={`${city.landingImage.url}`}
+                alt={city.landingImage.altText}
+                layout="fill"
+                className="-z-10 object-cover blur-xs brightness-75 scale-105"
+                priority
+                quality={60}
+              ></Image>
+              <div className="z-10 h-full grid text-center gap-8">
+                <h1 className="text-gray-100 text-8xl font-bold uppercase">
                   {city.landingTitle}
                 </h1>
                 <h2 className="text-gray-200 font-serif text-4xl uppercase">
