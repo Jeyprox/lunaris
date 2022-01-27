@@ -529,19 +529,26 @@ const Application = ({ cities, currentCity, closeApplication }) => {
               Required Field
             </p>
           </div>
-          <div className="flex items-center gap-4 w-4/5 mx-auto">
-            <button
-              onClick={closeApplication}
-              className="btn text-gray-800 border-red-400 hover:bg-red-600/10 rounded"
-            >
-              Close
-            </button>
-            <input
-              type="submit"
-              className={`cursor-pointer w-full btn hover:bg-blue-300/50 rounded text-gray-800 font-bold border-blue-400 ${
-                applicationStatus.status == 200 && "!border-green-400"
-              } ${applicationStatus.status == 400 && "!border-red-400"}`}
-            />
+          <div className="grid w-4/5 mx-auto">
+            <div className="flex gap-4 w-full">
+              <button
+                onClick={closeApplication}
+                className="btn text-gray-800 border-red-400 hover:bg-red-300/50 rounded"
+              >
+                Close
+              </button>
+              <input
+                type="submit"
+                className={`cursor-pointer w-full btn hover:bg-blue-300/50 rounded text-gray-800 font-bold border-blue-400 ${
+                  applicationStatus.status == 200 &&
+                  "!border-green-400 hover:bg-green-300/50"
+                } ${
+                  applicationStatus.status == 400 &&
+                  "!border-red-400 hover:bg-red-300/50"
+                }`}
+              />
+            </div>
+
             {applicationStatus.status != -1 && (
               <p className="text-base text-center uppercase font-semibold text-gray-500 mt-2">
                 {applicationStatus.message}

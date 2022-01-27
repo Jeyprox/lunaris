@@ -1,16 +1,9 @@
 import { GraphQLClient } from "graphql-request";
-import { Client, Intents, MessageEmbed } from "discord.js";
+import { Client, MessageEmbed } from "discord.js";
 import { applicationChannel, guildColor } from "../../lib/discord/guildIds";
 import { fetchUserByName } from "../../lib/discord/discordFetch";
 
-const client = new Client({
-  intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-  ],
-  partials: ["MESSAGE", "CHANNEL", "REACTION"],
-});
+const client = new Client();
 
 const sendApplication = async ({ body }, res) => {
   const graphcms = new GraphQLClient(process.env.GRAPHCMS_PROJECT_API, {
@@ -69,9 +62,7 @@ const sendApplication = async ({ body }, res) => {
             { name: "Reason for joining Lunaris", value: info.joinreason }
           )
           .setFooter("The application will be reviewed shortly by our staff");
-        const applicationMessage = await channel.send({
-          embeds: [applicationEmbed],
-        });
+        const applicationMessage = await channel.send(applicationEmbed);
         await applicationMessage.react("✅");
         await applicationMessage.react("❌");
         client.destroy();
