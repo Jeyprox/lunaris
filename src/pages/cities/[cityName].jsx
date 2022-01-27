@@ -57,7 +57,7 @@ const City = ({ city, moreCities, cities }) => {
     <>
       {city && (
         <div>
-          <section className="h-screen">
+          <section className="xl:h-screen md:h-[75vh]">
             <header>
               {cities && (
                 <MainNav
@@ -73,7 +73,7 @@ const City = ({ city, moreCities, cities }) => {
                 src={`${city.landingImage.url}`}
                 alt={city.landingImage.altText}
                 layout="fill"
-                className="-z-10 object-cover blur-xs brightness-75 scale-105"
+                className="-z-10 select-none object-cover blur-xs brightness-75 scale-105"
                 priority
                 quality={60}
               ></Image>
@@ -97,9 +97,8 @@ const City = ({ city, moreCities, cities }) => {
           </section>
           <section className="section xl:max-w-7xl">
             <h1 className="section-title">Information</h1>
-            <Element name="about" className="flex gap-x-16">
+            <Element name="about" className="flex flex-wrap gap-16 md:gap-8">
               <div>
-                {/* {!mapLoaded && ( */}
                 <div className="relative w-[600px] h-[400px]">
                   <Image
                     src={`/img/city-images/${city.cityName.toLowerCase()}_map.png`}
@@ -109,7 +108,6 @@ const City = ({ city, moreCities, cities }) => {
                     quality={75}
                   ></Image>
                 </div>
-                {/* )} */}
                 {/* <iframe
                   className={!mapLoaded ? "hidden" : ""}
                   src={`${getMapUrl(city.server)}?worldname=${
@@ -124,7 +122,7 @@ const City = ({ city, moreCities, cities }) => {
                   onLoad={() => setMapLoaded(true)}
                 ></iframe> */}
               </div>
-              <div className="w-full flex flex-col gap-y-4">
+              <div className="w-max flex flex-col gap-y-4">
                 <div className="grid gap-y-4">
                   <div className="flex items-end">
                     <h1 className="text-4xl uppercase text-gray-800 font-bold">

@@ -12,22 +12,22 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
   return (
     <nav className="relative container mx-auto py-6">
       <div className="flex items-center">
-        <ul className="select-none w-full flex justify-center items-center text-xl font-serif uppercase">
+        <ul className="select-none w-full flex justify-center items-center gap-x-16 text-xl font-serif uppercase">
           <li
             onClick={openApplication}
-            className="cursor-pointer px-8 py-1 hover:text-gray-500 duration-200"
+            className="cursor-pointer hover:text-gray-500 duration-200"
           >
             Apply
           </li>
-          <li className="cursor-not-allowed px-8 py-1 hover:text-gray-500 duration-200">
+          <li className="cursor-not-allowed hover:text-gray-500 duration-200">
             Merchants
           </li>
           <li
-            className={`font-sans text-3xl font-bold px-32 select-none text-[${cityColour}]`}
+            className={`font-sans text-center text-3xl font-bold px-12 select-none text-[${cityColour}]`}
           >
             {cityName}
           </li>
-          <li className="px-8 py-1 hover:text-gray-500 duration-200">
+          <li className="hover:text-gray-500 duration-200">
             <ScrollLink
               to="about"
               smooth={true}
@@ -38,7 +38,7 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
               About
             </ScrollLink>
           </li>
-          <li className="px-8 py-1 hover:text-gray-500 duration-200">
+          <li className="hover:text-gray-500 duration-200">
             <ScrollLink
               to="government"
               smooth={true}

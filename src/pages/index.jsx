@@ -100,7 +100,7 @@ export default function Home({ cities }) {
           src="/img/landing.png"
           alt="LandingImg-1"
           layout="fill"
-          className="-z-10 object-cover contrast-[0.8] saturate-[1.1] brightness-110 blur-xs scale-105"
+          className="-z-10 select-none object-cover contrast-[0.8] saturate-[1.1] brightness-110 blur-xs scale-105"
           priority
           quality={75}
         ></Image>
