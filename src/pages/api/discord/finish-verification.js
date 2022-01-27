@@ -10,12 +10,11 @@ const finishVerification = async ({ body }, res) => {
   if (match?.user) {
     const userData = await fetchMemberById(match.user.id);
     if (userData?.roles?.includes(applicationRole)) {
-      res.json({ finished: true });
-      return;
+      return res.json({ finished: true });
     }
+  } else {
+    return res.json({ finished: false });
   }
-  res.json({ finished: false });
-  return;
 };
 
 export default finishVerification;
