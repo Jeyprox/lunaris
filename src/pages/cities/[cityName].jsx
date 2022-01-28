@@ -3,7 +3,7 @@ import {
   HiChevronDown,
   HiLocationMarker,
   HiMap,
-  HiPencil,
+  HiPencilAlt,
   HiTag,
 } from "react-icons/hi";
 import { FaDiscord } from "react-icons/fa";
@@ -16,7 +16,7 @@ import {
 } from "../../lib/graphcms";
 import Link from "next/link";
 import { Element, animateScroll } from "react-scroll";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { FXAASkinViewer, IdleAnimation } from "skinview3d";
 import Application from "../../components/Application";
 import { RemoveScroll } from "react-remove-scroll";
@@ -40,24 +40,15 @@ const City = ({ city, moreCities, cities }) => {
         });
         skinViewer.animations.add(IdleAnimation);
       };
-      getSkinViewer(skinRef.current[index], player.ingameName);
+      getSkinViewer(skinRef.current[index], player.ign);
     });
   }, [city]);
-
-  // const getMapUrl = (server) => {
-  //   switch (server) {
-  //     case "Rathnir":
-  //       return "http://199.127.63.89:2096/";
-  //     case "Eldham":
-  //       return "http://104.238.222.67:2096/";
-  //   }
-  // };
 
   return (
     <>
       {city && (
         <div>
-          <section className="xl:h-screen md:h-[75vh]">
+          <section className="h-[75vh] xl:h-screen">
             <header>
               {cities && (
                 <MainNav
@@ -77,11 +68,11 @@ const City = ({ city, moreCities, cities }) => {
                 priority
                 quality={60}
               ></Image>
-              <div className="z-10 h-full grid text-center gap-8">
-                <h1 className="text-gray-100 text-8xl font-bold uppercase">
+              <div className="z-10 h-full grid text-center gap-2 lg:gap-8">
+                <h1 className="text-gray-100 text-dynamicTitle font-bold uppercase">
                   {city.landingTitle}
                 </h1>
-                <h2 className="text-gray-200 font-serif text-4xl uppercase">
+                <h2 className="text-gray-200 font-serif text-2xl lg:text-4xl uppercase">
                   {city.landingSubtitle}
                 </h2>
               </div>
@@ -99,7 +90,7 @@ const City = ({ city, moreCities, cities }) => {
             <h1 className="section-title">Information</h1>
             <Element name="about" className="flex flex-wrap gap-16 md:gap-8">
               <div>
-                <div className="relative w-[600px] h-[400px]">
+                <div className="relative w-96 h-72">
                   <Image
                     src={`/img/city-images/${city.cityName.toLowerCase()}_map.png`}
                     alt="Map"
@@ -108,19 +99,6 @@ const City = ({ city, moreCities, cities }) => {
                     quality={75}
                   ></Image>
                 </div>
-                {/* <iframe
-                  className={!mapLoaded ? "hidden" : ""}
-                  src={`${getMapUrl(city.server)}?worldname=${
-                    city.server
-                  }&mapname=surface&zoom=4&x=${city.cityCoordinates[0]}&z=${
-                    city.cityCoordinates[1]
-                  }`}
-                  width={600}
-                  height={400}
-                  frameBorder="0"
-                  allowFullScreen={false}
-                  onLoad={() => setMapLoaded(true)}
-                ></iframe> */}
               </div>
               <div className="w-max flex flex-col gap-y-4">
                 <div className="grid gap-y-4">
@@ -174,52 +152,58 @@ const City = ({ city, moreCities, cities }) => {
           </section>
           <Element className="section xl:max-w-7xl" name="government">
             <h1 className="section-title">Government Positions</h1>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {city.governmentPositions.map((player, index) => (
-                <div className="flex items-center gap-x-4" key={player.userId}>
-                  <div className="flex-none overflow-hidden">
+                <div
+                  className="flex flex-col sm:flex-row items-center gap-4"
+                  key={index}
+                >
+                  <div className="flex-none">
                     <canvas
                       className="rounded"
                       ref={(el) => (skinRef.current[index] = el)}
                     ></canvas>
                   </div>
-                  <div className="grid grid-cols-3 gap-y-2 gap-x-4 place-content-center">
-                    <div className="flex items-center">
-                      <HiTag className="text-xl text-gray-500 mr-2" />
-                      <p className="text-lg uppercase">IGN</p>
-                    </div>
-                    <h1 className="text-2xl col-span-2 text-gray-900 font-semibold uppercase">
-                      {player.ingameName}
-                    </h1>
-                    <div className="flex items-center">
-                      <FaDiscord className="text-xl text-gray-500 mr-2" />
-                      <p className="text-lg uppercase">Discord</p>
-                    </div>
-                    <h2 className="tag w-fit col-span-2">
-                      {player.discordName}
-                    </h2>
-                    {player.ministerPosition && (
-                      <div className="flex items-center">
-                        <HiPencil className="text-xl text-gray-500 mr-2" />
-                        <p className="text-lg uppercase">Ministry</p>
-                      </div>
+                  <div className="w-fit grid grid-cols-3 gap-y-2 gap-x-4 items-start">
+                    {Object.entries(player).map(
+                      ([key, value]) =>
+                        value && (
+                          <Fragment key={key}>
+                            <div className="flex items-center gap-2 py-1">
+                              {key === "ign" ? (
+                                <HiTag className="text-xl text-gray-500 flex-none" />
+                              ) : key === "discord" ? (
+                                <FaDiscord className="text-xl text-gray-500 flex-none" />
+                              ) : key === "govPos" ? (
+                                <HiPencilAlt className="text-xl text-gray-500 flex-none" />
+                              ) : (
+                                <RiGovernmentFill className="text-xl text-gray-500 flex-none" />
+                              )}
+
+                              <p className="text-lg uppercase">
+                                {key.toUpperCase()}
+                              </p>
+                            </div>
+                            <div className="col-span-2 flex flex-wrap gap-2">
+                              {key === "govPos" ? (
+                                value.map((item, i) => (
+                                  <h2 key={i} className="tag">
+                                    {item.replace(new RegExp("_", "g"), " ")}
+                                  </h2>
+                                ))
+                              ) : key === "ign" ? (
+                                <h1 className="text-xl xl:text-2xl col-span-2 text-gray-900 font-semibold uppercase">
+                                  {value}
+                                </h1>
+                              ) : (
+                                <h2 className="tag w-fit col-span-2">
+                                  {value}
+                                </h2>
+                              )}
+                            </div>
+                          </Fragment>
+                        )
                     )}
-                    {player.ministerPosition && (
-                      <h2 className="tag w-min col-span-2">
-                        {player.ministerPosition}
-                      </h2>
-                    )}
-                    <div className="flex items-center">
-                      <RiGovernmentFill className="text-xl text-gray-500 mr-2" />
-                      <p className="text-lg uppercase">Government</p>
-                    </div>
-                    <div className="flex flex-wrap gap-2 col-span-2 row-span-2">
-                      {player.governmentPositions.map((pos, i) => (
-                        <h2 key={i} className="tag">
-                          {pos.replace(new RegExp("_", "g"), " ")}
-                        </h2>
-                      ))}
-                    </div>
                   </div>
                 </div>
               ))}
@@ -228,15 +212,15 @@ const City = ({ city, moreCities, cities }) => {
           {moreCities.length > 0 && (
             <section className="section xl:max-w-4xl">
               <h1 className="section-title">Other cities</h1>
-              <div className="grid grid-cols-3 gap-x-24 justify-center justify-items-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 justify-center justify-items-center">
                 {moreCities.map((city) => (
                   <Link
                     key={city.cityName}
                     href={`/cities/${city.cityName}`}
                     passHref
                   >
-                    <div className="w-full cursor-pointer p-4 rounded-md flex flex-col gap-y-2 items-center border-2 hover:bg-gray-300/10">
-                      <div className="relative aspect-square h-24">
+                    <div className="cursor-pointer w-full p-4 rounded-md grid gap-y-2 justify-center border-2 hover:bg-gray-300/10">
+                      <div className="mx-auto relative aspect-square h-24">
                         <Image
                           src={city.cityMap.url}
                           alt={`${city.cityName} Map`}
@@ -244,24 +228,20 @@ const City = ({ city, moreCities, cities }) => {
                           objectFit="contain"
                         ></Image>
                       </div>
-                      <div className="flex flex-col gap-y-1">
-                        <div>
-                          <h1 className="text-2xl text-center font-serif uppercase text-gray-900">
-                            {city.cityName}
-                          </h1>
+                      <div className="grid">
+                        <h1 className="text-2xl text-center font-serif uppercase text-gray-900 mb-1">
+                          {city.cityName}
+                        </h1>
+                        <div className="flex items-center">
+                          <HiLocationMarker className="text-gray-500" />
+                          <p className="text-gray-600 text-base ml-1">
+                            X: {city.cityCoordinates[0]} | Y:
+                            {city.cityCoordinates[1]}
+                          </p>
                         </div>
-                        <div className="flex flex-col">
-                          <div className="flex items-center">
-                            <HiLocationMarker className="text-gray-500" />
-                            <p className="text-gray-600 text-base ml-1">
-                              X: {city.cityCoordinates[0]} | Y:
-                              {city.cityCoordinates[1]}
-                            </p>
-                          </div>
-                          <div className="flex items-center">
-                            <HiMap className="text-gray-500" />
-                            <p className="text-gray-600 ml-1">{city.server}</p>
-                          </div>
+                        <div className="flex items-center">
+                          <HiMap className="text-gray-500" />
+                          <p className="text-gray-600 ml-1">{city.server}</p>
                         </div>
                       </div>
                     </div>
@@ -279,7 +259,7 @@ const City = ({ city, moreCities, cities }) => {
                 transition={{ duration: 0.25 }}
               >
                 <RemoveScroll forwardProps>
-                  <div className="z-20 scroll-wheel overscroll-contain absolute bg-gray-200 h-[90vh] overflow-y-scroll top-12 inset-x-1/2 -translate-x-1/2 w-2/5 px-8 rounded-md">
+                  <div className="z-20 scroll-wheel overscroll-contain absolute bg-gray-200 h-[90vh] overflow-y-scroll top-12 inset-x-1/2 -translate-x-1/2 w-4/5 md:w-2/3 lg:w-3/5 xl:w-2/5 px-8 rounded-md">
                     <Application
                       closeApplication={() =>
                         setApplicationOpen(!applicationOpen)
@@ -307,20 +287,6 @@ export const getStaticProps = async ({ params }) => {
     .replace("-", " ")
     .replace(/(\b[a-z](?!\s))/g, (x) => x.toUpperCase());
   const data = await getCityByName(cityName);
-
-  for await (const player of data.city.governmentPositions) {
-    const res = await fetch(
-      `https://playerdb.co/api/player/minecraft/${player.ingameName}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const userId = await res.json();
-    player.userId = userId.data.player.id;
-  }
 
   const cities = await getAllCityPreviews();
 

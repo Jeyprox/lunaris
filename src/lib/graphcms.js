@@ -45,10 +45,10 @@ export async function getCityByName(name) {
             cityStatus,
             cityColour {hex},
             governmentPositions {
-                ingameName,
-                discordName
-                governmentPositions,
-                ministerPosition
+                ign
+                discord
+                govPos
+                ministry
             },
             server
         }
