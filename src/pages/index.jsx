@@ -5,9 +5,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CityItem from "../components/CityItem";
 
-import { HiArrowSmLeft } from "react-icons/hi";
+import { HiArrowSmLeft, HiChevronDown } from "react-icons/hi";
 import Link from "next/link";
 import { getAllCityPreviews } from "../lib/graphcms";
+import { Listbox } from "@headlessui/react";
 
 export default function Home({ cities }) {
   const [landing, setLanding] = useState(true);
@@ -36,7 +37,7 @@ export default function Home({ cities }) {
           </h2>
         </div>
         <motion.div
-          className="z-10 grid w-full md:w-4/5 items-center gap-4 md:gap-16 px-4"
+          className="z-10 grid w-full items-center gap-4 md:gap-16 px-4"
           layout
           transition={{ duration: 1 }}
         >
@@ -54,20 +55,57 @@ export default function Home({ cities }) {
               animate={{ y: 0, opacity: 1 }}
               initial={{ y: 50, opacity: 0 }}
               transition={{ duration: 1 }}
-              className="w-fit mx-auto relative grid grid-cols-2 sm:grid-cols-4 items-center justify-center gap-4"
+              className="w-fit mx-auto relative"
             >
-              {cities.map((city) => (
-                <div
-                  key={city.cityName}
-                  onClick={() => setSelectedCity(city.id)}
+              <Listbox
+                as="div"
+                className="md:hidden relative mb-24"
+                value={selectedCity}
+                onChange={setSelectedCity}
+              >
+                <Listbox.Button className="flex items-center justify-between font-serif text-gray-200 border-2 border-gray-200 px-2 py-1.5 text-xl text-left w-80">
+                  {getCityById(selectedCity).cityName || "Select a city"}
+                  <HiChevronDown />
+                </Listbox.Button>
+                <Listbox.Options
+                  as="ul"
+                  className="max-h-40 overflow-y-scroll absolute top-100 mt-1 bg-gray-200/25 border-2 border-gray-200 w-full"
                 >
-                  <CityItem
-                    name={city.cityName}
-                    mapUrl={city.cityMap.url}
-                    isSelected={selectedCity == city.id}
-                  />
-                </div>
-              ))}
+                  {cities.map((city) => (
+                    <Listbox.Option
+                      as="li"
+                      className="flex items-center font-serif gap-4 px-2 py-1"
+                      key={city.id}
+                      value={city.id}
+                    >
+                      <div className="relative w-10 aspect-square">
+                        <Image
+                          src={city.cityMap.url}
+                          alt={city.cityMap.altText}
+                          layout="fill"
+                          objectFit="contain"
+                          quality={75}
+                        />
+                      </div>
+                      <h1 className="text-gray-200">{city.cityName}</h1>
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+              </Listbox>
+              <div className="hidden md:grid grid-cols-4 gap-4">
+                {cities.map((city) => (
+                  <div
+                    key={city.cityName}
+                    onClick={() => setSelectedCity(city.id)}
+                  >
+                    <CityItem
+                      name={city.cityName}
+                      mapUrl={city.cityMap.url}
+                      isSelected={selectedCity == city.id}
+                    />
+                  </div>
+                ))}
+              </div>
             </motion.div>
           )}
         </motion.div>
@@ -102,8 +140,9 @@ export default function Home({ cities }) {
           layout="fill"
           className="-z-10 select-none object-cover contrast-[0.8] saturate-[1.1] brightness-110 blur-xs scale-105"
           priority
+          objectFit="cover"
           quality={75}
-        ></Image>
+        />
         <div className="hidden z-10 absolute bottom-6 w-full px-8 md:flex">
           <AnimatePresence>
             {!landing && (

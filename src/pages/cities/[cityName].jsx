@@ -220,7 +220,7 @@ const City = ({ city, moreCities, cities }) => {
                     passHref
                   >
                     <div className="cursor-pointer w-full p-4 rounded-md grid gap-y-2 justify-center border-2 hover:bg-gray-300/10">
-                      <div className="mx-auto relative aspect-square h-24">
+                      <div className="mx-auto relative aspect-square h-24 drop-shadow-dark">
                         <Image
                           src={city.cityMap.url}
                           alt={`${city.cityName} Map`}
