@@ -48,7 +48,7 @@ const City = ({ city, moreCities, cities }) => {
     <>
       {city && (
         <div>
-          <section className="h-[75vh] xl:h-screen">
+          <section className="h-[60vh] sm:h-[75vh] md:h-[90vh] xl:h-screen">
             <header>
               {cities && (
                 <MainNav
@@ -88,9 +88,9 @@ const City = ({ city, moreCities, cities }) => {
           </section>
           <section className="section xl:max-w-7xl">
             <h1 className="section-title">Information</h1>
-            <Element name="about" className="flex flex-wrap gap-16 md:gap-8">
+            <Element name="about" className="flex flex-wrap lg:gap-16 gap-8">
               <div>
-                <div className="relative w-96 h-72">
+                <div className="relative aspect-square h-64 md:w-96 md:h-72">
                   <Image
                     src={`/img/city-images/${city.cityName.toLowerCase()}_map.png`}
                     alt="Map"

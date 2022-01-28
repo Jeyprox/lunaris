@@ -27,22 +27,22 @@ export default function Home({ cities }) {
   return (
     <>
       <section className="relative h-screen py-4 flex flex-col gap-4 justify-between items-center">
-        <div className="z-10 grid gap-2 text-center">
-          <h1 className="text-gray-100 px-8 text-3xl font-bold uppercase border-b-gray-100 border-b-2">
+        <div className="z-10 grid gap-2 text-center divide-y-2 divide-gray-200">
+          <h1 className="text-gray-200 px-8 text-3xl font-bold uppercase">
             Lunari Empire
           </h1>
-          <h2 className="font-serif uppercase text-gray-100 text-4xl">
+          <h2 className="font-serif uppercase text-gray-100 text-4xl pt-2">
             Nation of the Moon
           </h2>
         </div>
         <motion.div
-          className="z-10 grid w-1/2 items-center gap-16"
+          className="z-10 grid w-full md:w-4/5 items-center gap-4 md:gap-16 px-4"
           layout
           transition={{ duration: 1 }}
         >
           <motion.h1
             layout
-            className="uppercase text-gray-100 text-7xl font-semibold text-center"
+            className="uppercase text-gray-100 text-dynamicTitle font-semibold text-center"
           >
             Ready for
             <br />
@@ -54,7 +54,7 @@ export default function Home({ cities }) {
               animate={{ y: 0, opacity: 1 }}
               initial={{ y: 50, opacity: 0 }}
               transition={{ duration: 1 }}
-              className="relative flex items-center justify-center gap-4"
+              className="w-fit mx-auto relative grid grid-cols-2 sm:grid-cols-4 items-center justify-center gap-4"
             >
               {cities.map((city) => (
                 <div
@@ -104,7 +104,7 @@ export default function Home({ cities }) {
           priority
           quality={75}
         ></Image>
-        <div className="z-10 absolute bottom-6 w-full px-8 flex">
+        <div className="hidden z-10 absolute bottom-6 w-full px-8 md:flex">
           <AnimatePresence>
             {!landing && (
               <motion.button

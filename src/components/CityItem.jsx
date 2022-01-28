@@ -9,9 +9,9 @@ const CityItem = ({ name, mapUrl, isSelected }) => {
     >
       <div className="pb-4 px-8">
         <div
-          className={`relative group-hover:scale-110 ${
+          className={`relative mx-auto group-hover:scale-110 ${
             isSelected && "scale-110"
-          } duration-200 select-none aspect-square w-20`}
+          } duration-200 select-none aspect-square w-16 lg:w-20`}
         >
           <Image
             src={mapUrl}
@@ -21,8 +21,9 @@ const CityItem = ({ name, mapUrl, isSelected }) => {
           ></Image>
         </div>
       </div>
-
-      <h1 className="text-gray-200 text-xl uppercase font-serif">{name}</h1>
+      <h1 className="text-gray-200 text-lg lg:text-xl uppercase font-serif">
+        {name}
+      </h1>
     </div>
   );
 };

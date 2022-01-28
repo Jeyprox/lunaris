@@ -104,7 +104,7 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
                     <RemoveScroll>
                       <Popover.Panel
                         as="div"
-                        className="z-20 absolute right-0 top-0 h-screen bg-gray-100 w-2/5 p-12"
+                        className="z-20 absolute right-0 top-0 h-screen bg-gray-100 w-4/5 md:w-2/5 p-12"
                       >
                         <Popover.Button className="absolute top-6 right-8 grid place-content-center cursor-pointer w-10 h-10 rounded-full border-gray-500 border-2">
                           <HiX className="text-2xl text-gray-500" />
