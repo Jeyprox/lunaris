@@ -18,30 +18,34 @@ import Link from "next/link";
 import { Element, animateScroll } from "react-scroll";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { FXAASkinViewer, IdleAnimation } from "skinview3d";
-import Application from "../../components/Application";
+const Application = dynamic(() => import("../../components/Application"));
+const GovernmentPosition = dynamic(() =>
+  import("../../components/GovernmentPosition")
+);
 import { RemoveScroll } from "react-remove-scroll";
 import { AnimatePresence, motion } from "framer-motion";
+import dynamic from "next/dynamic";
 
 const City = ({ city, moreCities, cities }) => {
-  const skinRef = useRef([]);
   const [applicationOpen, setApplicationOpen] = useState(false);
 
-  useEffect(() => {
-    if (!city) return;
-    city.governmentPositions.forEach((player, index) => {
-      const getSkinViewer = (canvas, playerName) => {
-        let skinViewer = new FXAASkinViewer({
-          canvas,
-          width: 121,
-          height: 169,
-          background: city.cityColour.hex,
-          skin: `https://minotar.net/skin/${playerName}`,
-        });
-        skinViewer.animations.add(IdleAnimation);
-      };
-      getSkinViewer(skinRef.current[index], player.ign);
-    });
-  }, [city]);
+  // const skinRef = useRef([]);
+  // useEffect(() => {
+  //   if (!city) return;
+  //   city.governmentPositions.forEach((player, index) => {
+  //     const getSkinViewer = (canvas, playerName) => {
+  //       let skinViewer = new FXAASkinViewer({
+  //         canvas,
+  //         width: 121,
+  //         height: 169,
+  //         background: city.cityColour.hex,
+  //         skin: `https://minotar.net/skin/${playerName}`,
+  //       });
+  //       skinViewer.animations.add(IdleAnimation);
+  //     };
+  //     getSkinViewer(skinRef.current[index], player.ign);
+  //   });
+  // }, [city]);
 
   return (
     <>
@@ -153,58 +157,11 @@ const City = ({ city, moreCities, cities }) => {
             <h1 className="section-title">Government Positions</h1>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {city.governmentPositions.map((player, index) => (
-                <div
-                  className="flex flex-col sm:flex-row items-center gap-4"
+                <GovernmentPosition
                   key={index}
-                >
-                  <div className="flex-none">
-                    <canvas
-                      className="rounded"
-                      ref={(el) => (skinRef.current[index] = el)}
-                    ></canvas>
-                  </div>
-                  <div className="w-fit grid grid-cols-3 gap-y-2 gap-x-4 items-start">
-                    {Object.entries(player).map(
-                      ([key, value]) =>
-                        value && (
-                          <Fragment key={key}>
-                            <div className="flex items-center gap-2 py-1">
-                              {key === "ign" ? (
-                                <HiTag className="text-xl text-gray-500 flex-none" />
-                              ) : key === "discord" ? (
-                                <FaDiscord className="text-xl text-gray-500 flex-none" />
-                              ) : key === "govPos" ? (
-                                <HiPencilAlt className="text-xl text-gray-500 flex-none" />
-                              ) : (
-                                <RiGovernmentFill className="text-xl text-gray-500 flex-none" />
-                              )}
-
-                              <p className="text-lg uppercase">
-                                {key.toUpperCase()}
-                              </p>
-                            </div>
-                            <div className="col-span-2 flex flex-wrap gap-2">
-                              {key === "govPos" ? (
-                                value.map((item, i) => (
-                                  <h2 key={i} className="tag">
-                                    {item.replace(new RegExp("_", "g"), " ")}
-                                  </h2>
-                                ))
-                              ) : key === "ign" ? (
-                                <h1 className="text-xl xl:text-2xl col-span-2 text-gray-900 font-semibold uppercase">
-                                  {value}
-                                </h1>
-                              ) : (
-                                <h2 className="tag w-fit col-span-2">
-                                  {value}
-                                </h2>
-                              )}
-                            </div>
-                          </Fragment>
-                        )
-                    )}
-                  </div>
-                </div>
+                  player={player}
+                  colour={city.cityColour.hex}
+                />
               ))}
             </div>
           </Element>
@@ -259,7 +216,7 @@ const City = ({ city, moreCities, cities }) => {
                 transition={{ duration: 0.25 }}
               >
                 <RemoveScroll forwardProps>
-                  <div className="z-20 scroll-wheel overscroll-contain absolute bg-gray-200 h-[90vh] overflow-y-scroll top-12 inset-x-1/2 -translate-x-1/2 w-4/5 md:w-2/3 lg:w-3/5 xl:w-2/5 px-8 rounded-md">
+                  <div className="z-30 scroll-wheel overscroll-contain absolute bg-gray-200 h-[90vh] overflow-y-scroll top-12 inset-x-1/2 -translate-x-1/2 w-4/5 md:w-2/3 lg:w-3/5 xl:w-2/5 px-8 rounded-md">
                     <Application
                       closeApplication={() =>
                         setApplicationOpen(!applicationOpen)
@@ -271,7 +228,7 @@ const City = ({ city, moreCities, cities }) => {
                 </RemoveScroll>
                 <span
                   onClick={() => setApplicationOpen(false)}
-                  className="absolute z-10 inset-0 bg-gray-900/40"
+                  className="absolute z-20 inset-0 bg-gray-900/40"
                 ></span>
               </motion.div>
             )}
