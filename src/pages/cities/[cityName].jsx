@@ -1,13 +1,5 @@
 import Image from "next/image";
-import {
-  HiChevronDown,
-  HiLocationMarker,
-  HiMap,
-  HiPencilAlt,
-  HiTag,
-} from "react-icons/hi";
-import { FaDiscord } from "react-icons/fa";
-import { RiGovernmentFill } from "react-icons/ri";
+import { HiChevronDown, HiLocationMarker, HiMap, HiTag } from "react-icons/hi";
 import MainNav from "../../components/MainNav";
 import {
   getAllCities,
@@ -16,8 +8,6 @@ import {
 } from "../../lib/graphcms";
 import Link from "next/link";
 import { Element, animateScroll } from "react-scroll";
-import { Fragment, useEffect, useRef, useState } from "react";
-import { FXAASkinViewer, IdleAnimation } from "skinview3d";
 const Application = dynamic(() => import("../../components/Application"));
 const GovernmentPosition = dynamic(() =>
   import("../../components/GovernmentPosition")
