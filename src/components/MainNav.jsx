@@ -25,7 +25,7 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
             Merchants
           </li>
           <li
-            className={`font-sans text-center text-2xl lg:text-3xl font-bold px:8 xl:px-16 select-none text-[${cityColour}]`}
+            className={`font-sans text-center text-2xl lg:text-3xl font-bold px:8 xl:px-16 select-none text-gray-800`}
           >
             {cityName}
           </li>

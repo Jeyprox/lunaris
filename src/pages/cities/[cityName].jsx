@@ -24,7 +24,6 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const City = ({ city, moreCities, cities }) => {
   const skinRef = useRef([]);
-  // const [mapLoaded, setMapLoaded] = useState(false);
   const [applicationOpen, setApplicationOpen] = useState(false);
 
   useEffect(() => {
@@ -220,12 +219,13 @@ const City = ({ city, moreCities, cities }) => {
                     passHref
                   >
                     <div className="cursor-pointer w-full p-4 rounded-md grid gap-y-2 justify-center border-2 hover:bg-gray-300/10">
-                      <div className="mx-auto relative aspect-square h-24 drop-shadow-dark">
+                      <div className="mx-auto relative aspect-square h-24">
                         <Image
                           src={city.cityMap.url}
                           alt={`${city.cityName} Map`}
                           layout="fill"
                           objectFit="contain"
+                          className="brightness-50"
                         ></Image>
                       </div>
                       <div className="grid">
