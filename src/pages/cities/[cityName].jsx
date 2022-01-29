@@ -9,8 +9,9 @@ import {
 import Link from "next/link";
 import { Element, animateScroll } from "react-scroll";
 const Application = dynamic(() => import("../../components/Application"));
-const GovernmentPosition = dynamic(() =>
-  import("../../components/GovernmentPosition")
+const GovernmentPosition = dynamic(
+  () => import("../../components/GovernmentPosition"),
+  { suspense: true }
 );
 import { RemoveScroll } from "react-remove-scroll";
 import { AnimatePresence, motion } from "framer-motion";
