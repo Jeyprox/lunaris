@@ -15,6 +15,7 @@ const GovernmentPosition = dynamic(() =>
 import { RemoveScroll } from "react-remove-scroll";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import { useState } from "react";
 
 const City = ({ city, moreCities, cities }) => {
   const [applicationOpen, setApplicationOpen] = useState(false);
