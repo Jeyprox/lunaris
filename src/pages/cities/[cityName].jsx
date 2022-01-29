@@ -29,24 +29,6 @@ import dynamic from "next/dynamic";
 const City = ({ city, moreCities, cities }) => {
   const [applicationOpen, setApplicationOpen] = useState(false);
 
-  // const skinRef = useRef([]);
-  // useEffect(() => {
-  //   if (!city) return;
-  //   city.governmentPositions.forEach((player, index) => {
-  //     const getSkinViewer = (canvas, playerName) => {
-  //       let skinViewer = new FXAASkinViewer({
-  //         canvas,
-  //         width: 121,
-  //         height: 169,
-  //         background: city.cityColour.hex,
-  //         skin: `https://minotar.net/skin/${playerName}`,
-  //       });
-  //       skinViewer.animations.add(IdleAnimation);
-  //     };
-  //     getSkinViewer(skinRef.current[index], player.ign);
-  //   });
-  // }, [city]);
-
   return (
     <>
       {city && (
