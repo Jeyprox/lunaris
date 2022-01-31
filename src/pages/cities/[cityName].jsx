@@ -1,28 +1,29 @@
+import { useState } from "react";
 import Image from "next/image";
-import { HiChevronDown, HiLocationMarker, HiMap, HiTag } from "react-icons/hi";
+import dynamic from "next/dynamic";
 import MainNav from "../../components/MainNav";
+import { FadeInSection } from "../../components/FadeInSection";
+import { CityLink } from "../../components/CityLink";
+const Application = dynamic(() => import("../../components/Application"));
+const GovernmentPosition = dynamic(() =>
+  import("../../components/GovernmentPosition")
+);
 import {
   getAllCities,
   getAllCityPreviews,
   getCityByName,
 } from "../../lib/graphcms";
-import Link from "next/link";
 import { Element, animateScroll } from "react-scroll";
-const Application = dynamic(() => import("../../components/Application"));
-const GovernmentPosition = dynamic(() =>
-  import("../../components/GovernmentPosition")
-);
 import { RemoveScroll } from "react-remove-scroll";
 import { AnimatePresence, motion } from "framer-motion";
-import dynamic from "next/dynamic";
-import { useState } from "react";
+import { HiChevronDown, HiTag } from "react-icons/hi";
 
-const City = ({ city, moreCities, cities }) => {
+const City = ({ city, moreCities, cities, uuidList }) => {
   const [applicationOpen, setApplicationOpen] = useState(false);
 
   return (
     <>
-      {city && (
+      {city && uuidList && (
         <div>
           <section className="h-[60vh] sm:h-[75vh] md:h-[90vh] xl:h-screen">
             <header>
@@ -62,122 +63,105 @@ const City = ({ city, moreCities, cities }) => {
               </div>
             </div>
           </section>
-          <section className="section xl:max-w-7xl">
-            <h1 className="section-title">Information</h1>
-            <Element name="about" className="flex flex-wrap lg:gap-16 gap-8">
-              <div>
-                <div className="relative aspect-square h-64 md:w-96 md:h-72">
-                  <Image
-                    src={`/img/city-images/${city.cityName.toLowerCase()}_map.png`}
-                    alt="Map"
-                    layout="fill"
-                    objectFit="cover"
-                    quality={75}
-                  ></Image>
-                </div>
-              </div>
-              <div className="w-max flex flex-col gap-y-4">
-                <div className="grid gap-y-4">
-                  <div className="flex items-end">
-                    <h1 className="text-4xl uppercase text-gray-800 font-bold">
-                      {city.cityName}
-                    </h1>
-                    <p className="ml-4 text-gray-600 text-lg font-serif uppercase">
-                      {city.server}
-                    </p>
+          <section>
+            <FadeInSection>
+              <Element name="about" className="section xl:max-w-7xl">
+                <h1 className="section-title">Information</h1>
+                <div className="flex flex-wrap lg:gap-16 gap-8">
+                  <div>
+                    <div className="relative aspect-square h-64 md:w-96 md:h-72">
+                      <Image
+                        src={`/img/city-images/${city.cityName.toLowerCase()}_map.png`}
+                        alt="Map"
+                        layout="fill"
+                        objectFit="cover"
+                        quality={75}
+                      ></Image>
+                    </div>
                   </div>
-                  <p className="text-gray-600 text-lg font-serif leading-6 max-w-[48ch]">
-                    {city.cityDescription}
-                  </p>
-                </div>
-                <div className="flex items-center py-4 w-fit gap-x-8 border-y border-gray-300">
-                  <div className="flex gap-x-2 items-center">
-                    <HiTag className="text-gray-600" />
-                    <h1 className="text-xl text-gray-800 uppercase">Tags</h1>
-                  </div>
-                  <div className="flex gap-x-2 items-center">
-                    {city.cityStatus.map((status) => (
-                      <p className="tag" key={status}>
-                        {status}
+                  <div className="w-max flex flex-col gap-y-4">
+                    <div className="grid gap-y-4">
+                      <div className="flex items-end">
+                        <h1 className="text-4xl uppercase text-gray-800 font-bold">
+                          {city.cityName}
+                        </h1>
+                        <p className="ml-4 text-gray-600 text-lg font-serif uppercase">
+                          {city.server}
+                        </p>
+                      </div>
+                      <p className="text-gray-600 text-lg font-serif leading-6 max-w-[48ch]">
+                        {city.cityDescription}
                       </p>
+                    </div>
+                    <div className="flex items-center py-4 w-fit gap-x-8 border-y border-gray-300">
+                      <div className="flex gap-x-2 items-center">
+                        <HiTag className="text-gray-600" />
+                        <h1 className="text-xl text-gray-800 uppercase">
+                          Tags
+                        </h1>
+                      </div>
+                      <div className="flex gap-x-2 items-center">
+                        {city.cityStatus.map((status) => (
+                          <p className="tag" key={status}>
+                            {status}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 w-fit items-end gap-x-8 text-center">
+                      <div className="grid place-content-center gap-y-2">
+                        <h1 className="text-5xl font-semibold text-gray-600">
+                          {city.citizenCount}
+                        </h1>
+                        <p className="uppercase font-serif">Citizens</p>
+                      </div>
+                      <div className="grid place-content-center gap-y-2">
+                        <h1 className="text-4xl font-semibold text-gray-600">
+                          {city.cityCoordinates[0]}
+                        </h1>
+                        <p className="uppercase font-serif">X-COORD</p>
+                      </div>
+                      <div className="grid place-content-center gap-y-2">
+                        <h1 className="text-4xl font-semibold text-gray-600">
+                          {city.cityCoordinates[1]}
+                        </h1>
+                        <p className="uppercase font-serif">Y-COORDS</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Element>
+            </FadeInSection>
+          </section>
+          <section>
+            <FadeInSection>
+              <Element className="section xl:max-w-7xl" name="government">
+                <h1 className="section-title">Government Positions</h1>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {city.governmentPositions.map((player, index) => (
+                    <GovernmentPosition
+                      key={index}
+                      player={player}
+                      colour={city.cityColour.hex}
+                      uuid={uuidList[index]}
+                    />
+                  ))}
+                </div>
+              </Element>
+            </FadeInSection>
+          </section>
+          {moreCities.length > 0 && (
+            <section>
+              <FadeInSection>
+                <div className="section xl:max-w-4xl">
+                  <h1 className="section-title">Other cities</h1>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 justify-center justify-items-center">
+                    {moreCities.map((city) => (
+                      <CityLink key={city.cityName} city={city} />
                     ))}
                   </div>
                 </div>
-                <div className="grid grid-cols-3 w-fit items-end gap-x-8 text-center">
-                  <div className="grid place-content-center gap-y-2">
-                    <h1 className="text-5xl font-semibold text-gray-600">
-                      {city.citizenCount}
-                    </h1>
-                    <p className="uppercase font-serif">Citizens</p>
-                  </div>
-                  <div className="grid place-content-center gap-y-2">
-                    <h1 className="text-4xl font-semibold text-gray-600">
-                      {city.cityCoordinates[0]}
-                    </h1>
-                    <p className="uppercase font-serif">X-COORD</p>
-                  </div>
-                  <div className="grid place-content-center gap-y-2">
-                    <h1 className="text-4xl font-semibold text-gray-600">
-                      {city.cityCoordinates[1]}
-                    </h1>
-                    <p className="uppercase font-serif">Y-COORDS</p>
-                  </div>
-                </div>
-              </div>
-            </Element>
-          </section>
-          <Element className="section xl:max-w-7xl" name="government">
-            <h1 className="section-title">Government Positions</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {city.governmentPositions.map((player, index) => (
-                <GovernmentPosition
-                  key={index}
-                  player={player}
-                  colour={city.cityColour.hex}
-                />
-              ))}
-            </div>
-          </Element>
-          {moreCities.length > 0 && (
-            <section className="section xl:max-w-4xl">
-              <h1 className="section-title">Other cities</h1>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 justify-center justify-items-center">
-                {moreCities.map((city) => (
-                  <Link
-                    key={city.cityName}
-                    href={`/cities/${city.cityName}`}
-                    passHref
-                  >
-                    <div className="cursor-pointer w-full p-4 rounded-md grid gap-y-2 justify-center border-2 hover:bg-gray-300/10">
-                      <div className="mx-auto relative aspect-square h-24">
-                        <Image
-                          src={city.cityMap.url}
-                          alt={`${city.cityName} Map`}
-                          layout="fill"
-                          objectFit="contain"
-                          className="brightness-50"
-                        ></Image>
-                      </div>
-                      <div className="grid">
-                        <h1 className="text-2xl text-center font-serif uppercase text-gray-900 mb-1">
-                          {city.cityName}
-                        </h1>
-                        <div className="flex items-center">
-                          <HiLocationMarker className="text-gray-500" />
-                          <p className="text-gray-600 text-base ml-1">
-                            X: {city.cityCoordinates[0]} | Y:
-                            {city.cityCoordinates[1]}
-                          </p>
-                        </div>
-                        <div className="flex items-center">
-                          <HiMap className="text-gray-500" />
-                          <p className="text-gray-600 ml-1">{city.server}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              </FadeInSection>
             </section>
           )}
           <AnimatePresence>
@@ -218,6 +202,16 @@ export const getStaticProps = async ({ params }) => {
     .replace(/(\b[a-z](?!\s))/g, (x) => x.toUpperCase());
   const data = await getCityByName(cityName);
 
+  const uuidList = await Promise.all(
+    data.city.governmentPositions.map(async ({ ign }) => {
+      const res = await fetch(
+        `https://api.mojang.com/users/profiles/minecraft/${ign}`
+      );
+      const userData = await res.json();
+      return userData.id;
+    })
+  );
+
   const cities = await getAllCityPreviews();
 
   return {
@@ -225,6 +219,7 @@ export const getStaticProps = async ({ params }) => {
       city: data.city,
       moreCities: data.moreCities,
       cities,
+      uuidList,
     },
   };
 };

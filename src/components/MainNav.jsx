@@ -34,7 +34,7 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
               to="about"
               smooth={true}
               duration={1000}
-              offset={-100}
+              offset={-50}
               className="cursor-pointer"
             >
               About
@@ -45,7 +45,7 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
               to="government"
               smooth={true}
               duration={1000}
-              offset={-100}
+              offset={-50}
               className="cursor-pointer"
             >
               Government

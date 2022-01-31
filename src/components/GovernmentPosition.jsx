@@ -1,26 +1,22 @@
-import React, { Fragment, useEffect, useRef } from "react";
+import Image from "next/image";
+import { Fragment } from "react";
 import { FaDiscord } from "react-icons/fa";
 import { HiPencilAlt, HiTag } from "react-icons/hi";
 import { RiGovernmentFill } from "react-icons/ri";
-import { SkinViewer, IdleAnimation } from "skinview3d";
 
-const GovernmentPosition = ({ player, colour }) => {
-  const skinRef = useRef(null);
-  useEffect(() => {
-    let skinViewer = new SkinViewer({
-      canvas: skinRef.current,
-      width: 121,
-      height: 169,
-      background: colour,
-      skin: `https://minotar.net/skin/${player.ign}`,
-    });
-    skinViewer.animations.add(IdleAnimation);
-  }, [skinRef, colour, player]);
-
+const GovernmentPosition = ({ uuid, player, colour }) => {
   return (
     <div className="flex flex-col sm:flex-row items-center gap-4">
-      <div className="flex-none">
-        <canvas className="rounded" ref={skinRef}></canvas>
+      <div className={`flex-none px-4 py-2 bg-[color:${colour}] rounded`}>
+        <div className="relative w-20 h-40">
+          <Image
+            src={`https://crafatar.com/renders/body/${uuid}?scale=5&overlay`}
+            alt={`${player.ign} avatar`}
+            layout="fill"
+            objectFit="contain"
+            quality={50}
+          />
+        </div>
       </div>
       <div className="w-fit grid grid-cols-3 gap-y-2 gap-x-4 items-start">
         {Object.entries(player).map(
