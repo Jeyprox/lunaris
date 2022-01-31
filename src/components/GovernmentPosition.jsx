@@ -7,7 +7,10 @@ import { RiGovernmentFill } from "react-icons/ri";
 const GovernmentPosition = ({ uuid, player, colour }) => {
   return (
     <div className="flex flex-col sm:flex-row items-center gap-4">
-      <div className={`flex-none px-4 py-2 bg-[color:${colour}] rounded`}>
+      <div
+        className={`flex-none px-4 py-2 rounded`}
+        style={{ backgroundColor: colour }}
+      >
         <div className="relative w-20 h-40">
           <Image
             src={`https://crafatar.com/renders/body/${uuid}?scale=5&overlay`}
