@@ -4,8 +4,8 @@ import { HiLocationMarker, HiMap } from "react-icons/hi";
 
 export const CityLink = ({ city }) => {
   return (
-    <Link href={`/cities/${city.cityName}`} passHref>
-      <div className="cursor-pointer w-full p-4 rounded-md grid gap-y-2 justify-center border-2 border-gray-300 hover:bg-gray-300/10">
+    <Link href={`/cities/${city.cityName.toLowerCase().replace(/\ /g, "-")}`}>
+      <a className="cursor-pointer w-full p-4 rounded-md grid gap-y-2 justify-center border-2 border-gray-300 hover:bg-gray-300/10">
         <div className="mx-auto relative aspect-square h-24">
           <Image
             src={city.cityMap.url}
@@ -31,7 +31,7 @@ export const CityLink = ({ city }) => {
             <p className="text-gray-600 ml-1">{city.server}</p>
           </div>
         </div>
-      </div>
+      </a>
     </Link>
   );
 };

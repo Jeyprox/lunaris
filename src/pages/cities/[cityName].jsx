@@ -226,10 +226,12 @@ export const getStaticProps = async ({ params }) => {
 
 export const getStaticPaths = async () => {
   let cities = await getAllCities();
+  const cityNames = cities.map(({ cityName }) => {
+    const newName = cityName.toLowerCase().replace(/\ /g, "-");
+    return { params: { cityName: newName } };
+  });
   return {
-    paths: cities.map(({ cityName }) => ({
-      params: { cityName },
-    })),
+    paths: cityNames,
     fallback: true,
   };
 };
