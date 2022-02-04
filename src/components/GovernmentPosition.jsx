@@ -6,12 +6,12 @@ import { RiGovernmentFill } from "react-icons/ri";
 
 const GovernmentPosition = ({ uuid, player, colour }) => {
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4">
+    <div className="flex flex-col items-center gap-4 sm:flex-row">
       <div
-        className={`flex-none px-4 py-2 rounded`}
+        className={`flex-none rounded px-4 py-2`}
         style={{ backgroundColor: colour }}
       >
-        <div className="relative w-20 h-40">
+        <div className="relative h-40 w-20">
           <Image
             src={`https://crafatar.com/renders/body/${uuid}?scale=5&overlay`}
             alt={`${player.ign} avatar`}
@@ -21,20 +21,20 @@ const GovernmentPosition = ({ uuid, player, colour }) => {
           />
         </div>
       </div>
-      <div className="w-fit grid grid-cols-3 gap-y-2 gap-x-4 items-start">
+      <div className="grid w-fit grid-cols-3 items-start gap-y-2 gap-x-4">
         {Object.entries(player).map(
           ([key, value]) =>
             value && (
               <Fragment key={key}>
                 <div className="flex items-center gap-2 py-1">
                   {key === "ign" ? (
-                    <HiTag className="text-xl text-gray-500 flex-none" />
+                    <HiTag className="flex-none text-xl text-gray-500" />
                   ) : key === "discord" ? (
-                    <FaDiscord className="text-xl text-gray-500 flex-none" />
+                    <FaDiscord className="flex-none text-xl text-gray-500" />
                   ) : key === "govPos" ? (
-                    <HiPencilAlt className="text-xl text-gray-500 flex-none" />
+                    <HiPencilAlt className="flex-none text-xl text-gray-500" />
                   ) : (
-                    <RiGovernmentFill className="text-xl text-gray-500 flex-none" />
+                    <RiGovernmentFill className="flex-none text-xl text-gray-500" />
                   )}
 
                   <p className="text-lg uppercase">{key.toUpperCase()}</p>
@@ -47,11 +47,11 @@ const GovernmentPosition = ({ uuid, player, colour }) => {
                       </h2>
                     ))
                   ) : key === "ign" ? (
-                    <h1 className="text-xl xl:text-2xl col-span-2 text-gray-900 font-semibold uppercase">
+                    <h1 className="col-span-2 text-xl font-semibold uppercase text-gray-900 xl:text-2xl">
                       {value}
                     </h1>
                   ) : (
-                    <h2 className="tag w-fit col-span-2">{value}</h2>
+                    <h2 className="tag col-span-2 w-fit">{value}</h2>
                   )}
                 </div>
               </Fragment>

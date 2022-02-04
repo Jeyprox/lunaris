@@ -5,13 +5,13 @@ const CityItem = ({ name, mapUrl, isSelected }) => {
     <div
       className={`group hover:bg-gray-100/10 ${
         isSelected && "bg-gray-100/10"
-      } py-6 px-2 duration-200 rounded-lg cursor-pointer grid items-center text-center`}
+      } grid cursor-pointer items-center rounded-lg py-6 px-2 text-center duration-200`}
     >
-      <div className="pb-4 px-8">
+      <div className="px-8 pb-4">
         <div
           className={`relative mx-auto group-hover:scale-110 ${
             isSelected && "scale-110"
-          } duration-200 select-none aspect-square w-16 lg:w-20`}
+          } aspect-square w-16 select-none duration-200 lg:w-20`}
         >
           <Image
             src={mapUrl}
@@ -21,7 +21,7 @@ const CityItem = ({ name, mapUrl, isSelected }) => {
           ></Image>
         </div>
       </div>
-      <h1 className="text-gray-200 text-lg lg:text-xl uppercase font-serif">
+      <h1 className="font-serif text-lg uppercase text-gray-200 lg:text-xl">
         {name}
       </h1>
     </div>

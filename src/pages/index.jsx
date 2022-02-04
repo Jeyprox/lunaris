@@ -27,23 +27,23 @@ export default function Home({ cities }) {
 
   return (
     <>
-      <section className="relative h-screen py-4 flex flex-col gap-4 justify-between items-center">
-        <div className="z-10 grid gap-2 text-center divide-y-2 divide-gray-200">
-          <h1 className="text-gray-200 px-8 text-3xl font-bold uppercase">
+      <section className="relative flex h-screen flex-col items-center justify-between gap-4 py-4">
+        <div className="z-10 grid gap-2 divide-y-2 divide-gray-200 text-center">
+          <h1 className="px-8 text-3xl font-bold uppercase text-gray-200">
             Lunari Empire
           </h1>
-          <h2 className="font-serif uppercase text-gray-100 text-4xl pt-2">
+          <h2 className="pt-2 font-serif text-4xl uppercase text-gray-100">
             Nation of the Moon
           </h2>
         </div>
         <motion.div
-          className="z-10 grid w-full items-center gap-4 md:gap-16 px-4"
+          className="z-10 grid w-full items-center gap-4 px-4 md:gap-16"
           layout
           transition={{ duration: 1 }}
         >
           <motion.h1
             layout
-            className="uppercase text-gray-100 text-dynamicTitle font-semibold text-center"
+            className="text-center text-dynamicTitle font-semibold uppercase text-gray-100"
           >
             Ready for
             <br />
@@ -55,30 +55,30 @@ export default function Home({ cities }) {
               animate={{ y: 0, opacity: 1 }}
               initial={{ y: 50, opacity: 0 }}
               transition={{ duration: 1 }}
-              className="w-fit mx-auto relative"
+              className="relative mx-auto w-fit"
             >
               <Listbox
                 as="div"
-                className="md:hidden relative mb-24"
+                className="relative mb-24 md:hidden"
                 value={selectedCity}
                 onChange={setSelectedCity}
               >
-                <Listbox.Button className="flex items-center justify-between font-serif text-gray-200 border-2 border-gray-200 px-2 py-1.5 text-xl text-left w-80">
+                <Listbox.Button className="flex w-80 items-center justify-between border-2 border-gray-200 px-2 py-1.5 text-left font-serif text-xl text-gray-200">
                   {getCityById(selectedCity).cityName || "Select a city"}
                   <HiChevronDown />
                 </Listbox.Button>
                 <Listbox.Options
                   as="ul"
-                  className="max-h-40 overflow-y-scroll absolute top-100 mt-1 bg-gray-200/25 border-2 border-gray-200 w-full"
+                  className="top-100 absolute mt-1 max-h-40 w-full overflow-y-scroll border-2 border-gray-200 bg-gray-200/25"
                 >
                   {cities.map((city) => (
                     <Listbox.Option
                       as="li"
-                      className="flex items-center font-serif gap-4 px-2 py-1"
+                      className="flex items-center gap-4 px-2 py-1 font-serif"
                       key={city.id}
                       value={city.id}
                     >
-                      <div className="relative w-10 aspect-square">
+                      <div className="relative aspect-square w-10">
                         <Image
                           src={city.cityMap.url}
                           alt={city.cityMap.altText}
@@ -92,7 +92,7 @@ export default function Home({ cities }) {
                   ))}
                 </Listbox.Options>
               </Listbox>
-              <div className="hidden md:grid grid-cols-4 gap-4">
+              <div className="hidden grid-cols-4 gap-4 md:grid">
                 {cities.map((city) => (
                   <div
                     key={city.cityName}
@@ -117,7 +117,7 @@ export default function Home({ cities }) {
           )}
           {!landing && (
             <button
-              className="btn text-2xl disabled:cursor-not-allowed hover:bg-gray-200/25"
+              className="btn text-2xl hover:bg-gray-200/25 disabled:cursor-not-allowed"
               disabled={selectedCity == null}
             >
               {selectedCity == null ? (
@@ -138,12 +138,12 @@ export default function Home({ cities }) {
           src="/img/landing.png"
           alt="LandingImg-1"
           layout="fill"
-          className="-z-10 select-none object-cover contrast-[0.8] saturate-[1.1] brightness-110 blur-xs scale-105"
+          className="-z-10 scale-105 select-none object-cover blur-xs brightness-110 contrast-[0.8] saturate-[1.1]"
           priority
           objectFit="cover"
           quality={75}
         />
-        <div className="hidden z-10 absolute bottom-6 w-full px-8 md:flex">
+        <div className="absolute bottom-6 z-10 hidden w-full px-8 md:flex">
           <AnimatePresence>
             {!landing && (
               <motion.button
@@ -152,10 +152,10 @@ export default function Home({ cities }) {
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.5 }}
                 onClick={() => setLanding(true)}
-                className="border-gray-300 border-2 rounded-full p-1 hover:bg-gray-100/20 duration-200"
+                className="rounded-full border-2 border-gray-300 p-1 duration-200 hover:bg-gray-100/20"
                 aria-label="Go Back"
               >
-                <HiArrowSmLeft className="text-gray-300 text-2xl" />
+                <HiArrowSmLeft className="text-2xl text-gray-300" />
               </motion.button>
             )}
           </AnimatePresence>

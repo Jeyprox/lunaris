@@ -140,24 +140,24 @@ const Application = ({ cities, currentCity, closeApplication }) => {
 
   return (
     <>
-      <section className="relative container xl:max-w-xl mx-auto my-16 grid gap-8">
+      <section className="container relative mx-auto my-16 grid gap-8 xl:max-w-xl">
         <span
           onClick={closeApplication}
-          className="cursor-pointer absolute right-0 border-2 border-gray-600 rounded-full hover:bg-gray-300/50 duration-100"
+          className="absolute right-0 cursor-pointer rounded-full border-2 border-gray-600 duration-100 hover:bg-gray-300/50"
         >
-          <HiX className="text-gray-600 text-2xl m-1" />
+          <HiX className="m-1 text-2xl text-gray-600" />
         </span>
         <div className="grid gap-1">
-          <h1 className="text-3xl uppercase font-bold text-gray-800">
+          <h1 className="text-3xl font-bold uppercase text-gray-800">
             Lunari Empire
           </h1>
-          <h2 className="text-lg font-serif text-gray-600">
+          <h2 className="font-serif text-lg text-gray-600">
             Application for Citizenship
           </h2>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-y-12">
           <div className="grid gap-y-1">
-            <span className="text-xl uppercase text-gray-800 font-semibold">
+            <span className="text-xl font-semibold uppercase text-gray-800">
               Select a city
               <strong className="ml-1 text-gray-400">*</strong>
             </span>
@@ -167,7 +167,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
               value={selectedCity}
               onChange={(newValue) => setValue("city", newValue)}
             >
-              <Listbox.Button className="w-full flex items-center justify-between border-2 border-gray-500 px-2 py-1.5 rounded">
+              <Listbox.Button className="flex w-full items-center justify-between rounded border-2 border-gray-500 px-2 py-1.5">
                 <p className="font-serif text-gray-800">{selectedCity}</p>
                 <HiChevronDown className="text-xl text-gray-800" />
               </Listbox.Button>
@@ -179,7 +179,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="w-full absolute z-10 top-full mt-1 bg-gray-100 rounded overflow-hidden shadow-md">
+                <Listbox.Options className="absolute top-full z-10 mt-1 w-full overflow-hidden rounded bg-gray-100 shadow-md">
                   {cities.map((city) => (
                     <Listbox.Option
                       className={`cursor-pointer`}
@@ -190,7 +190,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
                         <p
                           className={`px-3 py-1.5 ${
                             selected && "!bg-blue-300"
-                          } hover:bg-gray-200/50 duration-100 font-serif text-gray-800`}
+                          } font-serif text-gray-800 duration-100 hover:bg-gray-200/50`}
                         >
                           {city.cityName}
                         </p>
@@ -205,13 +205,13 @@ const Application = ({ cities, currentCity, closeApplication }) => {
             </p>
           </div>
           <div className="flex items-end justify-between gap-x-2">
-            <label htmlFor="username" className="relative flex-1 grid gap-y-1">
-              <span className="block text-xl text-gray-800 font-semibold uppercase">
+            <label htmlFor="username" className="relative grid flex-1 gap-y-1">
+              <span className="block text-xl font-semibold uppercase text-gray-800">
                 Minecraft Name
                 <strong className="ml-1 text-gray-400">*</strong>
               </span>
               <input
-                className="w-full form-input-field form-text-input"
+                className="form-input-field form-text-input w-full"
                 type="text"
                 aria-invalid={errors.username ? true : false}
                 placeholder="Example"
@@ -245,15 +245,15 @@ const Application = ({ cities, currentCity, closeApplication }) => {
                   className="rounded"
                 ></Image>
               ) : (
-                <div className="w-full h-full bg-blue-300/50 border-2 border-blue-400 rounded grid place-content-center">
-                  <span className="text-gray-800 font-bold text-4xl">?</span>
+                <div className="grid h-full w-full place-content-center rounded border-2 border-blue-400 bg-blue-300/50">
+                  <span className="text-4xl font-bold text-gray-800">?</span>
                 </div>
               )}
             </div>
           </div>
-          <div className="flex gap-x-2 items-end">
-            <label className="w-full grid gap-y-1">
-              <span className="text-xl text-gray-800 font-semibold uppercase">
+          <div className="flex items-end gap-x-2">
+            <label className="grid w-full gap-y-1">
+              <span className="text-xl font-semibold uppercase text-gray-800">
                 Discord Tag
                 <strong className="ml-1 text-gray-400">*</strong>
               </span>
@@ -284,7 +284,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
             </label>
             <button
               onClick={(e) => verifyUser(e)}
-              className={`px-2 py-1.5 font-semibold text-gray-800 uppercase font-serif border-2 hover:bg-blue-300/50 border-blue-400 rounded duration-100 ${
+              className={`rounded border-2 border-blue-400 px-2 py-1.5 font-serif font-semibold uppercase text-gray-800 duration-100 hover:bg-blue-300/50 ${
                 joinStatus == 3 && "border-green-400"
               } ${joinStatus == 2 && "border-orange-400"} ${
                 joinStatus == 1 && "border-red-400"
@@ -293,8 +293,8 @@ const Application = ({ cities, currentCity, closeApplication }) => {
               Verify
             </button>
           </div>
-          <label className="w-full grid gap-y-1">
-            <span className="text-xl text-gray-800 font-semibold uppercase">
+          <label className="grid w-full gap-y-1">
+            <span className="text-xl font-semibold uppercase text-gray-800">
               Time On Stoneworks
               <strong className="ml-1 text-gray-400">*</strong>
             </span>
@@ -315,7 +315,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
                 <p role="alert" className="form-error-message">
                   {errors.time_days?.message}
                 </p>
-                <p className="text-lg font-serif text-gray-700 uppercase">
+                <p className="font-serif text-lg uppercase text-gray-700">
                   Day(s)
                 </p>
               </div>
@@ -335,7 +335,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
                 <p className="form-error-message">
                   {errors.time_weeks?.message}
                 </p>
-                <p className="text-lg font-serif text-gray-700 uppercase">
+                <p className="font-serif text-lg uppercase text-gray-700">
                   Week(s)
                 </p>
               </div>
@@ -355,19 +355,19 @@ const Application = ({ cities, currentCity, closeApplication }) => {
                 <p className="form-error-message">
                   {errors.time_months?.message}
                 </p>
-                <p className="text-lg font-serif text-gray-700 uppercase">
+                <p className="font-serif text-lg uppercase text-gray-700">
                   Month(s)
                 </p>
               </div>
             </div>
           </label>
           <label className="grid gap-y-1">
-            <span className="text-xl text-gray-800 font-semibold uppercase">
+            <span className="text-xl font-semibold uppercase text-gray-800">
               Your timezone
               <strong className="ml-1 text-gray-400">*</strong>
             </span>
             <div className="relative flex items-center gap-x-2">
-              <p className="text-lg font-serif text-gray-700 uppercase">GMT</p>
+              <p className="font-serif text-lg uppercase text-gray-700">GMT</p>
               <input
                 className="number-input form-input-field w-12 text-center font-bold"
                 type="number"
@@ -393,12 +393,12 @@ const Application = ({ cities, currentCity, closeApplication }) => {
           </label>
           <div>
             <label>
-              <span className="text-xl text-gray-800 font-semibold uppercase mb-1">
+              <span className="mb-1 text-xl font-semibold uppercase text-gray-800">
                 Previous Nations
               </span>
               <div className="flex gap-x-2">
                 <input
-                  className="w-full form-input-field form-text-input"
+                  className="form-input-field form-text-input w-full"
                   type="text"
                   placeholder="Plagatea, Simulami..."
                   {...register("nations", { required: false })}
@@ -407,14 +407,14 @@ const Application = ({ cities, currentCity, closeApplication }) => {
                   onClick={(e) => (
                     e.preventDefault(), addNation(getValues("nations"))
                   )}
-                  className="border-2 border-gray-500 hover:bg-gray-200/50 duration-200 rounded px-2 py-1.5"
+                  className="rounded border-2 border-gray-500 px-2 py-1.5 duration-200 hover:bg-gray-200/50"
                   aria-label="Add Nation"
                 >
                   <HiPlus className="text-xl" />
                 </button>
               </div>
             </label>
-            <div className="flex flex-wrap gap-2 mt-2">
+            <div className="mt-2 flex flex-wrap gap-2">
               {nations.map((nation) => (
                 <div
                   onClick={() =>
@@ -424,7 +424,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
                       )
                     )
                   }
-                  className="flex items-center cursor-pointer hover:bg-gray-200/50 duration-200 px-1.5 py-0.5 rounded border-gray-400 border-2"
+                  className="flex cursor-pointer items-center rounded border-2 border-gray-400 px-1.5 py-0.5 duration-200 hover:bg-gray-200/50"
                   key={nation}
                 >
                   <p className="uppercase text-gray-700">{nation}</p>
@@ -435,13 +435,13 @@ const Application = ({ cities, currentCity, closeApplication }) => {
           </div>
           <div className="relative">
             <label>
-              <span className="text-xl text-gray-800 font-semibold uppercase mb-1">
+              <span className="mb-1 text-xl font-semibold uppercase text-gray-800">
                 Ideas for Profession
                 <strong className="ml-1 text-gray-400">*</strong>
               </span>
               <div className="flex gap-x-2">
                 <input
-                  className="w-full form-input-field form-text-input"
+                  className="form-input-field form-text-input w-full"
                   type="text"
                   aria-invalid={errors.professions ? true : false}
                   placeholder="Builder, Politician..."
@@ -454,14 +454,14 @@ const Application = ({ cities, currentCity, closeApplication }) => {
                   onClick={(e) => (
                     e.preventDefault(), addProfession(getValues("professions"))
                   )}
-                  className="border-2 border-gray-500 hover:bg-gray-200/50 duration-200 rounded px-2 py-1.5"
+                  className="rounded border-2 border-gray-500 px-2 py-1.5 duration-200 hover:bg-gray-200/50"
                   aria-label="Add Profession"
                 >
                   <HiPlus className="text-xl" />
                 </button>
               </div>
             </label>
-            <div className="flex flex-wrap gap-2 mt-2">
+            <div className="mt-2 flex flex-wrap gap-2">
               {professions.map((profession) => (
                 <div
                   onClick={() =>
@@ -471,7 +471,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
                       )
                     )
                   }
-                  className="flex items-center cursor-pointer hover:bg-gray-200/50 duration-200 px-1.5 py-0.5 rounded border-gray-400 border-2"
+                  className="flex cursor-pointer items-center rounded border-2 border-gray-400 px-1.5 py-0.5 duration-200 hover:bg-gray-200/50"
                   key={profession}
                 >
                   <p className="uppercase text-gray-700">{profession}</p>
@@ -481,13 +481,13 @@ const Application = ({ cities, currentCity, closeApplication }) => {
             </div>
           </div>
           <label className="grid gap-y-1">
-            <span className="text-xl text-gray-800 font-semibold uppercase">
+            <span className="text-xl font-semibold uppercase text-gray-800">
               Why do you want to join Lunaris
               <strong className="ml-1 text-gray-400">*</strong>
             </span>
             <div className="relative">
               <textarea
-                className="w-full form-input-field form-text-input font-normal max-h-48 min-h-[5em]"
+                className="form-input-field form-text-input max-h-48 min-h-[5em] w-full font-normal"
                 type="text"
                 aria-invalid={errors.joinreason ? true : false}
                 maxLength="200"
@@ -500,7 +500,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
               <p role="alert" className="form-error-message">
                 {errors.joinreason?.message}
               </p>
-              <span className="absolute bottom-2 right-4 text-gray-500 font-semibold text-sm">
+              <span className="absolute bottom-2 right-4 text-sm font-semibold text-gray-500">
                 {joinreason.length}/200
               </span>
             </div>
@@ -508,14 +508,14 @@ const Application = ({ cities, currentCity, closeApplication }) => {
           <label className="relative cursor-pointer">
             <div>
               <input
-                className="cursor-pointer bg-inherit rounded focus:ring-transparent focus:ring-offset-transparent"
+                className="cursor-pointer rounded bg-inherit focus:ring-transparent focus:ring-offset-transparent"
                 type="checkbox"
                 aria-invalid={errors.commitment ? true : false}
                 {...register("commitment", {
                   required: "Required field",
                 })}
               />
-              <span className="ml-2 text-gray-500 font-semibold">
+              <span className="ml-2 font-semibold text-gray-500">
                 Are you going to be commited to playing on the server?
               </span>
             </div>
@@ -524,22 +524,22 @@ const Application = ({ cities, currentCity, closeApplication }) => {
             </p>
           </label>
           <div>
-            <p className="uppercase text-gray-600 font-semibold">
+            <p className="font-semibold uppercase text-gray-600">
               <strong className="mr-1">*</strong>
               Required Field
             </p>
           </div>
-          <div className="grid w-4/5 mx-auto">
-            <div className="flex gap-4 w-full">
+          <div className="mx-auto grid w-4/5">
+            <div className="flex w-full gap-4">
               <button
                 onClick={closeApplication}
-                className="btn text-gray-800 border-red-400 hover:bg-red-300/50 rounded"
+                className="btn rounded border-red-400 text-gray-800 hover:bg-red-300/50"
               >
                 Close
               </button>
               <input
                 type="submit"
-                className={`cursor-pointer w-full btn hover:bg-blue-300/50 rounded text-gray-800 font-bold border-blue-400 ${
+                className={`btn w-full cursor-pointer rounded border-blue-400 font-bold text-gray-800 hover:bg-blue-300/50 ${
                   applicationStatus.status == 200 &&
                   "!border-green-400 hover:bg-green-300/50"
                 } ${
@@ -550,7 +550,7 @@ const Application = ({ cities, currentCity, closeApplication }) => {
             </div>
 
             {applicationStatus.status != -1 && (
-              <p className="text-base text-center uppercase font-semibold text-gray-500 mt-2">
+              <p className="mt-2 text-center text-base font-semibold uppercase text-gray-500">
                 {applicationStatus.message}
               </p>
             )}

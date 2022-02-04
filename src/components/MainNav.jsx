@@ -12,24 +12,24 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
   };
 
   return (
-    <nav className="lg:relative container mx-auto py-6 px-2">
-      <div className="flex justify-between items-center">
-        <ul className="select-none w-full flex lg:justify-center items-center gap-8 xl:gap-16 text-xl font-serif uppercase">
+    <nav className="container mx-auto py-6 px-2 lg:relative">
+      <div className="flex items-center justify-between">
+        <ul className="flex w-full select-none items-center gap-8 font-serif text-xl uppercase lg:justify-center xl:gap-16">
           <li
             onClick={openApplication}
-            className="hidden lg:block cursor-pointer hover:text-gray-500 duration-200"
+            className="hidden cursor-pointer duration-200 hover:text-gray-500 lg:block"
           >
             Apply
           </li>
-          <li className="hidden lg:block cursor-not-allowed hover:text-gray-500 duration-200">
+          <li className="hidden cursor-not-allowed duration-200 hover:text-gray-500 lg:block">
             Merchants
           </li>
           <li
-            className={`font-sans text-center text-2xl lg:text-3xl font-bold px:8 xl:px-16 select-none text-gray-800`}
+            className={`px:8 select-none text-center font-sans text-2xl font-bold text-gray-800 lg:text-3xl xl:px-16`}
           >
             {cityName}
           </li>
-          <li className="hidden lg:block hover:text-gray-500 duration-200">
+          <li className="hidden duration-200 hover:text-gray-500 lg:block">
             <ScrollLink
               to="about"
               smooth={true}
@@ -40,7 +40,7 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
               About
             </ScrollLink>
           </li>
-          <li className="hidden lg:block hover:text-gray-500 duration-200">
+          <li className="hidden duration-200 hover:text-gray-500 lg:block">
             <ScrollLink
               to="government"
               smooth={true}
@@ -69,11 +69,11 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Menu.Items className="z-10 absolute w-2/3 left-1/2 -translate-x-1/2 top-full bg-gray-200 px-8 py-4 rounded-b-md flex justify-around">
+                <Menu.Items className="absolute left-1/2 top-full z-10 flex w-2/3 -translate-x-1/2 justify-around rounded-b-md bg-gray-200 px-8 py-4">
                   {cities.map((cityItem) => (
                     <Menu.Item key={cityItem.id}>
                       <Link href={`/cities/${convertName(cityItem.cityName)}`}>
-                        <a className="text-xl text-gray-700 uppercase font-semibold hover:text-gray-500 duration-200">
+                        <a className="text-xl font-semibold uppercase text-gray-700 duration-200 hover:text-gray-500">
                           {cityItem.cityName}
                         </a>
                       </Link>
@@ -90,7 +90,7 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
                   </Popover.Button>
                   <Popover.Overlay
                     className={`${
-                      open ? "opacity-30 fixed inset-0" : "opacity-0"
+                      open ? "fixed inset-0 opacity-30" : "opacity-0"
                     } bg-black`}
                   />
                   <Transition
@@ -104,12 +104,12 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
                     <RemoveScroll>
                       <Popover.Panel
                         as="div"
-                        className="z-20 absolute right-0 top-0 h-screen bg-gray-100 w-4/5 md:w-2/5 p-12"
+                        className="absolute right-0 top-0 z-20 h-screen w-4/5 bg-gray-100 p-12 md:w-2/5"
                       >
-                        <Popover.Button className="absolute top-6 right-8 grid place-content-center cursor-pointer w-10 h-10 rounded-full border-gray-500 border-2">
+                        <Popover.Button className="absolute top-6 right-8 grid h-10 w-10 cursor-pointer place-content-center rounded-full border-2 border-gray-500">
                           <HiX className="text-2xl text-gray-500" />
                         </Popover.Button>
-                        <div className="h-full grid gap-8 uppercase items-center text-center">
+                        <div className="grid h-full items-center gap-8 text-center uppercase">
                           <div className="grid gap-4">
                             <h2 className="text-3xl font-semibold">
                               Navigation
@@ -117,14 +117,14 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
                             <ul className="flex flex-col gap-2 font-serif text-xl">
                               <li
                                 onClick={openApplication}
-                                className="cursor-pointer hover:text-gray-500 duration-200"
+                                className="cursor-pointer duration-200 hover:text-gray-500"
                               >
                                 Apply
                               </li>
-                              <li className="cursor-not-allowed hover:text-gray-500 duration-200">
+                              <li className="cursor-not-allowed duration-200 hover:text-gray-500">
                                 Merchants
                               </li>
-                              <li className="hover:text-gray-500 duration-200">
+                              <li className="duration-200 hover:text-gray-500">
                                 <ScrollLink
                                   to="about"
                                   smooth={true}
@@ -135,7 +135,7 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
                                   About
                                 </ScrollLink>
                               </li>
-                              <li className="hover:text-gray-500 duration-200">
+                              <li className="duration-200 hover:text-gray-500">
                                 <ScrollLink
                                   to="government"
                                   smooth={true}
@@ -158,7 +158,7 @@ const MainNav = ({ cities, cityName, cityColour, openApplication }) => {
                                       cityItem.cityName
                                     )}`}
                                   >
-                                    <a className="text-xl hover:text-gray-500 duration-200">
+                                    <a className="text-xl duration-200 hover:text-gray-500">
                                       {cityItem.cityName}
                                     </a>
                                   </Link>
