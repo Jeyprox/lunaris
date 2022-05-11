@@ -20,7 +20,6 @@ import { HiChevronDown, HiTag } from "react-icons/hi";
 
 const City = ({ city, moreCities, cities, uuidList }) => {
   const [applicationOpen, setApplicationOpen] = useState(false);
-
   return (
     <>
       {city && uuidList && (

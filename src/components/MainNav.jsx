@@ -1,9 +1,8 @@
-import { Menu, Popover, Transition } from "@headlessui/react";
 import Link from "next/link";
+
+import { Menu, Popover, Transition } from "@headlessui/react";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
-
 import { Link as ScrollLink } from "react-scroll";
-
 import { RemoveScroll } from "react-remove-scroll";
 
 const MainNav = ({ cities, cityName, cityColour, openApplication }) => {

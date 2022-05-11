@@ -1,14 +1,14 @@
-import Image from "next/image";
-
 import { useState } from "react";
 
-import { motion, AnimatePresence } from "framer-motion";
-import CityItem from "../components/CityItem";
-
-import { HiArrowSmLeft, HiChevronDown } from "react-icons/hi";
+import Image from "next/image";
 import Link from "next/link";
-import { getAllCityPreviews } from "../lib/graphcms";
+
+import { motion, AnimatePresence } from "framer-motion";
+import { HiArrowSmLeft, HiChevronDown } from "react-icons/hi";
 import { Listbox } from "@headlessui/react";
+
+import CityItem from "../components/CityItem";
+import { getAllCityPreviews } from "../lib/graphcms";
 
 export default function Home({ cities }) {
   const [landing, setLanding] = useState(true);

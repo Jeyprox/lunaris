@@ -1,5 +1,7 @@
 import Image from "next/image";
+
 import { Fragment } from "react";
+
 import { FaDiscord } from "react-icons/fa";
 import { HiPencilAlt, HiTag } from "react-icons/hi";
 import { RiGovernmentFill } from "react-icons/ri";
